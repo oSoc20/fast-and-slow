@@ -1,5 +1,5 @@
 <template>
-    <b-navbar variant="faded" type="light">
+    <b-navbar variant="dark" type="dark">
         <b-navbar-brand href="/">Fast and slow</b-navbar-brand>
     </b-navbar>
 </template>
