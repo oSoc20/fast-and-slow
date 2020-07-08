@@ -92,10 +92,10 @@
                     name: ''
                 },
                 items: [
-                    {name: "Datastream 1"},
-                    {name: "Datastream 2"},
-                    {name: "Datastream 3"},
-                    {name: "Datastream 4"}
+                    {name: "Address registry"},
+                    {name: "Traffic data stream"},
+                    {name: "Population registry"},
+                    {name: "Health"}
                 ],
                 fragmentation_options: [
                     {text: "Datastream 1", value: "Datastream 1"},
