@@ -3,7 +3,8 @@
         <Navbar class="mb-4"/>
 
         <b-container>
-            <DatastreamInput/>
+            <router-view />
+<!--            <DatastreamInput/>-->
         </b-container>
 
     </div>
@@ -11,12 +12,12 @@
 
 <script>
     import Navbar from "./components/Navbar";
-    import DatastreamInput from "./components/DatastreamInput";
+    // import DatastreamInput from "./components/DatastreamInput";
 
     export default {
         name: 'App',
         components: {
-            DatastreamInput,
+            // DatastreamInput,
             Navbar,
         }
     }
