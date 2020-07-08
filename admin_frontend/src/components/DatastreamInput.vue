@@ -4,12 +4,12 @@
             <b-row class="justify-content-md-center mb-5">
                 <b-col cols="5">
                     <b-input-group size="lg">
-                        <b-form-input v-model="urlForm.url"></b-form-input>
+                        <b-form-input v-model="urlForm.url" placeholder="Datastream URI"></b-form-input>
                     </b-input-group>
                 </b-col>
                 <b-col cols="3">
                     <b-input-group size="lg">
-                        <b-form-input v-model="urlForm.name"></b-form-input>
+                        <b-form-input v-model="urlForm.name" placeholder="Name"></b-form-input>
                     </b-input-group>
                 </b-col>
                 <b-col cols="2">
