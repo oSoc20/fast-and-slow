@@ -45,7 +45,6 @@
 
 <script>
     import rdfDereferencer from "rdf-dereference";
-    import {storeStream} from "rdf-store-stream";
     import 'setimmediate';
 
     export default {
@@ -86,28 +85,15 @@
             fetchStream: async function (url) {
                 console.log(url)
                 try {
-                    // const { quads1 } = await rdfDereferencer.dereference('https://www.rubensworks.net/');
-                    // console.log(quads1)
                     const { quads } = await rdfDereferencer.dereference(url)
-                    const store = await storeStream(quads);
-                    console.log(store)
+                    quads.on('data', (quad) => {
+                        if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path' && quad.object.value.includes('sosa')) {
+                            console.log(quad)
+                        }
+                    })
                 } catch (e) {
-                    console.log(e)
+                    console.error(e)
                 }
-
-                // try {
-                //     let fetch = new ldfetch({}); //options: allow to add more headers if needed
-                //     let response = await fetch.get(url);
-                //     console.log(response.triples)
-                //     for (let i = 0; i < response.triples.length; i++) {
-                //         let triple = response.triples[i];
-                //         if (triple.subject.value === 'https://streams.datapiloten.be/observations#32d53e9beb4f2447115b02e158840be2') {
-                //             console.error(triple);
-                //         }
-                //     }
-                // } catch (e) {
-                //     console.error(e);
-                // }
             },
             setVariant() {
                 this.fragment_status.forEach(function (item) {
