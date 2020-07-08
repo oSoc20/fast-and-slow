@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import ldfetch from 'ldfetch'
+    import rdfDereferencer from "rdf-dereference";
     export default {
         name: "DatastreamInput",
         data() {
@@ -81,21 +81,29 @@
 
             },
             fetchStream: async function (url) {
+                console.log(url)
                 try {
-                    let fetch = new ldfetch({}); //options: allow to add more headers if needed
-                    let response = await fetch.get(url);
-                    for (let i = 0; i < response.triples.length; i++) {
-                        let triple = response.triples[i];
-                        if (triple.subject.value === 'https://streams.datapiloten.be/observations#32d53e9beb4f2447115b02e158840be2') {
-                            console.error(triple);
-                        }
-                    }
-                    fetch.frame(response.triples, {'http://www.w3.org/ns/sosa/hasResult': {}}).then(object => {
-                        console.log('Or you can also use the JSON-LD frame functionality to get what you want in a JS object', object);
-                    });
+                    // const { quads1 } = await rdfDereferencer.dereference('https://www.rubensworks.net/');
+                    // console.log(quads1)
+                    const { triples } = await rdfDereferencer.dereference(url)
+                    triples.on('data', (triple) => console.log(triple))
                 } catch (e) {
-                    console.error(e);
+                    console.log(e)
                 }
+
+                // try {
+                //     let fetch = new ldfetch({}); //options: allow to add more headers if needed
+                //     let response = await fetch.get(url);
+                //     console.log(response.triples)
+                //     for (let i = 0; i < response.triples.length; i++) {
+                //         let triple = response.triples[i];
+                //         if (triple.subject.value === 'https://streams.datapiloten.be/observations#32d53e9beb4f2447115b02e158840be2') {
+                //             console.error(triple);
+                //         }
+                //     }
+                // } catch (e) {
+                //     console.error(e);
+                // }
             },
             setVariant() {
                 this.fragment_status.forEach(function (item) {
