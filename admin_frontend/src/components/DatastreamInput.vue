@@ -13,7 +13,7 @@
                     </b-input-group>
                 </b-col>
                 <b-col cols="2">
-                    <b-button type="submit" size="lg" variant="primary">Add</b-button>
+                    <b-button type="submit" size="lg" variant="primary" @click="busy()" >Add</b-button>
                 </b-col>
             </b-row>
         </b-form>
@@ -27,7 +27,7 @@
                             {{ row.item.name }}
                         </template>
                         <template v-slot:cell(action)="row">
-                            <b-button size="sm" @click="remove(row.item, row.index, $event.target)" class="mr-1">
+                            <b-button variant="outline-secondary" size="sm" @click="remove(row.item, row.index)" class="mr-1">
                                 Remove
                             </b-button>
                         </template>
@@ -45,15 +45,24 @@
                     <b-row class="justify-content-md-center mb-5">
                         <b-form-group>
                             <label><b>Feature options</b></label>
-                            <b-form-checkbox-group :options="feature_options" required>
+
+                            <!-- show spinner if loading -->
+                            <template v-if="isBusy">
+                                <div>
+                                    <b-spinner ></b-spinner>
+                                </div>
+                            </template>
+
+                            <b-form-checkbox-group v-else :options="feature_options" required>
                             </b-form-checkbox-group>
+                            
                         </b-form-group>
                     </b-row>
 
                 </b-col>
 
             </b-row>
-            <b-row class="justify-content-md-center mb-5">
+            <!-- <b-row class="justify-content-md-center mb-5">
                 <b-col cols="5">
                     <b-button variant="primary">Build fragmentation</b-button>
                 </b-col>
@@ -65,7 +74,7 @@
                 <b-col cols="10">
                     <b-table :items="fragment_status"></b-table>
                 </b-col>
-            </b-row>
+            </b-row> -->
         </b-form>
     </div>
 </template>
@@ -102,7 +111,8 @@
                 fields: [
                     {key: 'streams', label: 'Datastreams'},
                     {key: 'action', label: 'Action'}
-                ]
+                ],
+                isBusy: false
             }
         },
         created() {
@@ -123,8 +133,9 @@
                             console.log(quad)
                             const splitted = quad.object.value.split('/')
                             this.feature_options.push({text: splitted[splitted.length - 1], value: quad.object.value})
-
                         }
+                        //remove spinner
+                        this.isBusy = false;
                     })
                 } catch (e) {
                     console.error(e)
@@ -140,6 +151,13 @@
                         item["_cellVariants"] = {status: "warning"}
                     }
                 })
+            },
+            remove(item, index){
+                this.items.splice(index, 1);
+                this.fragmentation_options.splice(index, 1);
+            },
+            busy(){
+                this.isBusy = true;
             }
         },
 
