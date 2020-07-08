@@ -45,6 +45,9 @@
 
 <script>
     import rdfDereferencer from "rdf-dereference";
+    import {storeStream} from "rdf-store-stream";
+    import 'setimmediate';
+
     export default {
         name: "DatastreamInput",
         data() {
@@ -85,8 +88,9 @@
                 try {
                     // const { quads1 } = await rdfDereferencer.dereference('https://www.rubensworks.net/');
                     // console.log(quads1)
-                    const { triples } = await rdfDereferencer.dereference(url)
-                    triples.on('data', (triple) => console.log(triple))
+                    const { quads } = await rdfDereferencer.dereference(url)
+                    const store = await storeStream(quads);
+                    console.log(store)
                 } catch (e) {
                     console.log(e)
                 }
