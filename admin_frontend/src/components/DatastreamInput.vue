@@ -85,10 +85,13 @@
             fetchStream: async function (url) {
                 console.log(url)
                 try {
-                    const { quads } = await rdfDereferencer.dereference(url)
+                    const {quads} = await rdfDereferencer.dereference(url)
                     quads.on('data', (quad) => {
                         if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path' && quad.object.value.includes('sosa')) {
                             console.log(quad)
+                            const splitted = quad.object.value.split('/')
+                            this.options.push({text: splitted[splitted.length - 1], value: quad.object.value})
+
                         }
                     })
                 } catch (e) {
