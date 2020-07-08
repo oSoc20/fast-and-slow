@@ -27,39 +27,39 @@
                             {{ row.item.name }}
                         </template>
                         <template v-slot:cell(action)="row">
-                            <b-button variant="outline-secondary" size="sm" @click="remove(row.item, row.index)" class="mr-1">
-                                Remove
+                            <b-button variant="outline-secondary" size="sm" @click="edit(row.item, row.index)" class="mr-1">
+                                Edit
                             </b-button>
                         </template>
                     </b-table>
                 </b-col>
 
-                <b-col cols="5">
-                    <b-row class="justify-content-md-center mb-5">
-                        <b-form-group>
-                            <label><b>Fragmentation options</b></label>
-                            <b-form-radio-group :options="fragmentation_options" required>
-                            </b-form-radio-group>
-                        </b-form-group>
-                    </b-row>
-                    <b-row class="justify-content-md-center mb-5">
-                        <b-form-group>
-                            <label><b>Feature options</b></label>
+<!--                <b-col cols="5">-->
+<!--                    <b-row class="justify-content-md-center mb-5">-->
+<!--                        <b-form-group>-->
+<!--                            <label><b>Fragmentation options</b></label>-->
+<!--                            <b-form-radio-group :options="fragmentation_options" required>-->
+<!--                            </b-form-radio-group>-->
+<!--                        </b-form-group>-->
+<!--                    </b-row>-->
+<!--                    <b-row class="justify-content-md-center mb-5">-->
+<!--                        <b-form-group>-->
+<!--                            <label><b>Feature options</b></label>-->
 
-                            <!-- show spinner if loading -->
-                            <template v-if="isBusy">
-                                <div>
-                                    <b-spinner ></b-spinner>
-                                </div>
-                            </template>
+<!--                            &lt;!&ndash; show spinner if loading &ndash;&gt;-->
+<!--                            <template v-if="isBusy">-->
+<!--                                <div>-->
+<!--                                    <b-spinner ></b-spinner>-->
+<!--                                </div>-->
+<!--                            </template>-->
 
-                            <b-form-checkbox-group v-else :options="feature_options" required>
-                            </b-form-checkbox-group>
-                            
-                        </b-form-group>
-                    </b-row>
+<!--                            <b-form-checkbox-group v-else :options="feature_options" required>-->
+<!--                            </b-form-checkbox-group>-->
+<!--                            -->
+<!--                        </b-form-group>-->
+<!--                    </b-row>-->
 
-                </b-col>
+<!--                </b-col>-->
 
             </b-row>
             <!-- <b-row class="justify-content-md-center mb-5">
@@ -121,7 +121,11 @@
         methods: {
             submitUrl: function (evt) {
                 evt.preventDefault()
-                this.fetchStream(this.urlForm.url)
+
+                this.items.push({name: this.urlForm.name, url: this.urlForm.url})
+                // this.fetchStream(this.urlForm.url)
+                // const encodedUrl = "/stream/?url=" + encodeURIComponent(this.urlForm.url)
+                // this.$router.push(encodedUrl)
 
             },
             fetchStream: async function (url) {
@@ -158,6 +162,10 @@
             },
             busy(){
                 this.isBusy = true;
+            },
+            edit(item, index) {
+                const encodedUrl = "/stream/?url=" + encodeURIComponent(this.items[index].url)
+                this.$router.push(encodedUrl)
             }
         },
 
