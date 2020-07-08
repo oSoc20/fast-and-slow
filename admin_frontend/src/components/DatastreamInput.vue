@@ -15,14 +15,27 @@
                 <b-button size="lg" variant="primary">Add</b-button>
             </b-col>
         </b-row>
+
         <b-row class="justify-content-md-center mb-5">
+            <!-- V-slot to provide custom rendering for particular field -->
             <b-col cols="5">
-                <b-table :items="items"></b-table>
+                <b-table :fields="fields" :items="items">
+                    <template v-slot:cell(streams) = "row">
+                        {{ row.item.name }}
+                    </template>
+                    <template v-slot:cell(action) = "row">
+                        <b-button size="sm" @click="remove(row.item, row.index, $event.target)" class="mr-1">
+                            Remove
+                        </b-button>
+                    </template>
+                </b-table>
             </b-col>
+
             <b-col cols="5">
                 <b-form-checkbox-group :options="options">
                 </b-form-checkbox-group>
             </b-col>
+
         </b-row>
         <b-row class="justify-content-md-center mb-5">
             <b-col cols="5">
@@ -63,6 +76,10 @@
                     {URI: "Datastream 3", status:"Queued"},
                     {URI: "Datastream 4", status:"Queued"}
                 ],
+                fields: [
+                    { key: 'streams', label: 'Datastreams' },
+                    { key: 'action', label: 'Action' }
+                ]
             }
         },
     }
