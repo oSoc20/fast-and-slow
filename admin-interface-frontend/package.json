@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@govflanders/vl-ui-button": "^3.11.3",
+    "@govflanders/vl-ui-checkbox": "^3.11.3",
     "@govflanders/vl-ui-core": "^4.0.3",
+    "@govflanders/vl-ui-data-table": "^3.11.3",
+    "@govflanders/vl-ui-input-field": "^3.11.3",
+    "@govflanders/vl-ui-titles": "^3.11.3",
     "@govflanders/vl-ui-vue-components": "^4.0.2",
     "core-js": "^3.6.5",
     "node-sass": "^4.14.1",
