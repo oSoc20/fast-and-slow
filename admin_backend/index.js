@@ -18,7 +18,31 @@ app.get('/', (req, res) => {
     res.send('Something')
 })
 
-app.post('/addStream', function (req, res) {
+app.get('/streams', function (req, res) {
+    var streams = {}
+    client.keys('*', function (err, keys) {
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i]
+            client.get(key, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+                var name_list = JSON.parse(result)
+                streams[key] = name_list[name_list.length - 1]
+            })
+        }
+
+    })
+    console.log(streams)
+    res.json(streams)
+})
+
+app.post('/stream', function (req, res) {
     console.log(req.body)
     var url = req.body.url;
     var name = req.body.name;

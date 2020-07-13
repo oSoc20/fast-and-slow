@@ -118,13 +118,24 @@
         },
         created() {
             this.setVariant();
+            this.getAllStreams();
         },
         methods: {
+            getAllStreams: async function () {
+                const response = await fetch('http://localhost:3000/streams')
+                const data = await response.json()
+
+                this.items = []
+                for (const item in data) {
+                    this.items.push({name: item})
+                }
+
+            },
             submitUrl: async function (evt) {
                 evt.preventDefault()
 
 
-                const response = await fetch('http://localhost:3000/addStream', {
+                const response = await fetch('http://localhost:3000/stream', {
                     method: 'post',
                     body: JSON.stringify({name: this.urlForm.name, url: this.urlForm.url}),
                     headers: {
@@ -139,6 +150,7 @@
                 } else {
                     console.log("An error occurred when adding the data stream")
                 }
+                await this.getAllStreams()
 
             },
             fetchStream: async function (url) {
