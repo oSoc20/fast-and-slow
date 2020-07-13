@@ -29,14 +29,14 @@ app.post('/addStream', function (req, res) {
         }
         var name_list = []
         if (result) {
-            result.push(name)
+            JSON.parse(result).push(name)
             name_list = result
         } else {
-            name_list = [name]
+            name_list = JSON.stringify([name])
         }
         client.set(url, name_list, redis.print)
     })
-    res.json({status: 'success'})
+    res.send('success')
 })
 
 

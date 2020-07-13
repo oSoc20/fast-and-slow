@@ -132,11 +132,13 @@
                     }
 
                 })
-                if (response.status === 'success') {
+                console.log(response)
+                if (response === 'success') {
                     this.items.push({name: this.urlForm.name, url: this.urlForm.url})
                 } else {
                     console.log("An error occurred when adding the data stream")
                 }
+
                 // this.fetchStream(this.urlForm.url)
                 // const encodedUrl = "/stream/?url=" + encodeURIComponent(this.urlForm.url)
                 // this.$router.push(encodedUrl)
