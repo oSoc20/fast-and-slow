@@ -36,6 +36,7 @@ app.post('/addStream', function (req, res) {
         }
         client.set(url, name_list, redis.print)
     })
+    res.json({status: 'success'})
 })
 
 
