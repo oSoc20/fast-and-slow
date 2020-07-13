@@ -16,23 +16,25 @@ app.get('/', (req, res) => {
     res.send('Something')
 })
 
-app.get('/add', (req, res) => {
-    client.set('testKey', 'testValue', redis.print);
-    res.send('Added')
-})
+app.post('/addStream', function (req, res) {
+    var url = req.body.url;
+    var name = req.body.name;
 
-app.get('/get', (req, res) => {
-    client.get('testKey', function (err, result) {
+    client.get(url, function (err, result) {
         if (err) {
             console.log(err);
             throw err;
         }
-        res.json(result)
+        var name_list = []
+        if (result) {
+            result.push(name)
+            name_list = result
+        } else {
+            name_list = [name]
+        }
+        client.set(url, name_list, redis.print)
     })
-
 })
-
-client.set('testKey', 'testValue', redis.print);
 
 
 app.listen(3000, () => {
