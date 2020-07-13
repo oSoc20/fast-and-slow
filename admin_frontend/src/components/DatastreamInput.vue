@@ -123,6 +123,11 @@
                 evt.preventDefault()
 
                 this.items.push({name: this.urlForm.name, url: this.urlForm.url})
+
+                fetch('localhost:3000/addStream', {
+                    method: 'post',
+                    body: JSON.stringify({name: this.urlForm.name, url: this.urlForm.url})
+                })
                 // this.fetchStream(this.urlForm.url)
                 // const encodedUrl = "/stream/?url=" + encodeURIComponent(this.urlForm.url)
                 // this.$router.push(encodedUrl)
