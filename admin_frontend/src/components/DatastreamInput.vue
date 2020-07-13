@@ -119,15 +119,16 @@
             this.setVariant();
         },
         methods: {
-            submitUrl: function (evt) {
+            submitUrl: async function (evt) {
                 evt.preventDefault()
 
                 this.items.push({name: this.urlForm.name, url: this.urlForm.url})
 
-                fetch('localhost:3000/addStream', {
+                const response = await fetch('http://localhost:3000/addStream', {
                     method: 'post',
                     body: JSON.stringify({name: this.urlForm.name, url: this.urlForm.url})
                 })
+                console.log(response)
                 // this.fetchStream(this.urlForm.url)
                 // const encodedUrl = "/stream/?url=" + encodeURIComponent(this.urlForm.url)
                 // this.$router.push(encodedUrl)

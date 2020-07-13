@@ -1,12 +1,14 @@
 const express = require('express');
 const redis = require('redis');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const client = redis.createClient();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors())
 
 client.on('error', function (err) {
     console.log('Something went wrong ' + err);
@@ -17,9 +19,9 @@ app.get('/', (req, res) => {
 })
 
 app.post('/addStream', function (req, res) {
+    console.log(req.body)
     var url = req.body.url;
     var name = req.body.name;
-
     client.get(url, function (err, result) {
         if (err) {
             console.log(err);
