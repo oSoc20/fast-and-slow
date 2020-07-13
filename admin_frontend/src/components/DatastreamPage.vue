@@ -58,7 +58,7 @@
              * @param features
              * @param nodes
              * @param properties
-             * @returns {{parameter: {URI defining that parameter}}}
+             * @returns {{}}: parameter: [URI's defining that parameter]
              */
             combine: function (features, nodes, properties) {
 
@@ -96,7 +96,7 @@
             /**
              * Generate a display name for a list of property URI's
              * @param url_list
-             * @returns {string}
+             * @returns {string}: name for the parameter
              */
             getShowValue: function (url_list) {
                 let returnValue = ""
@@ -135,6 +135,7 @@
                             this.isBusy = false;
 
                             const feature_values = this.combine(features, nodes, properties)
+                            console.log(feature_values)
                             for (const feature in feature_values) {
                                 this.feature_options.push({text: feature, value: feature_values[feature]})
                             }
