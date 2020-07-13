@@ -18,26 +18,23 @@ app.get('/', (req, res) => {
     res.send('Something')
 })
 
-app.get('/streams', function (req, res) {
-    var streams = {}
-    client.keys('*', function (err, keys) {
+app.get('/streams', async function (req, res) {
+    let streams = {}
+    let {err, keys} = await client.keys('*');
+    if (err) {
+        console.log(err);
+        throw err;
+    }
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        let {err, result} = await client.get(key)
         if (err) {
             console.log(err);
             throw err;
         }
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i]
-            client.get(key, function (err, result) {
-                if (err) {
-                    console.log(err);
-                    throw err;
-                }
-                var name_list = JSON.parse(result)
-                streams[key] = name_list[name_list.length - 1]
-            })
-        }
-
-    })
+        let name_list = JSON.parse(result)
+        streams[key] = name_list[name_list.length - 1]
+    }
     console.log(streams)
     res.json(streams)
 })
