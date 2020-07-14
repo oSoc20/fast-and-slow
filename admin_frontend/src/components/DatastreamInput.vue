@@ -13,7 +13,7 @@
                     </b-input-group>
                 </b-col>
                 <b-col cols="2">
-                    <b-button type="submit" size="lg" variant="primary" @click="busy()">Add</b-button>
+                    <b-button type="submit" size="lg" variant="primary">Add</b-button>
                 </b-col>
             </b-row>
         </b-form>
@@ -21,10 +21,13 @@
         <b-form>
             <b-row class="justify-content-md-center mb-5">
                 <!-- V-slot to provide custom rendering for particular field -->
-                <b-col cols="5">
+                <b-col cols="10">
                     <b-table :fields="fields" :items="items">
                         <template v-slot:cell(streams)="row">
                             {{ row.item.name }}
+                        </template>
+                        <template v-slot:cell(url)="row">
+                            {{ row.item.url }}
                         </template>
                         <template v-slot:cell(action)="row">
                             <b-button variant="outline-secondary" size="sm" @click="edit(row.item, row.index)"
@@ -81,7 +84,6 @@
 </template>
 
 <script>
-    import rdfDereferencer from "rdf-dereference";
     import 'setimmediate';
 
     export default {
@@ -92,12 +94,7 @@
                     url: '',
                     name: ''
                 },
-                items: [
-                    {name: "Address registry"},
-                    {name: "Traffic data stream"},
-                    {name: "Population registry"},
-                    {name: "Health"}
-                ],
+                items: [],
                 fragmentation_options: [
                     {text: "Datastream 1", value: "Datastream 1"},
                     {text: "Datastream 2", value: "Datastream 2"},
@@ -111,13 +108,13 @@
                     {URI: "Datastream 4", status: "Queued"}],
                 fields: [
                     {key: 'streams', label: 'Datastreams'},
+                    {key: 'url', label: 'Url'},
                     {key: 'action', label: 'Action'}
                 ],
                 isBusy: false
             }
         },
         created() {
-            this.setVariant();
             this.getAllStreams();
         },
         methods: {
@@ -127,13 +124,11 @@
 
                 this.items = []
                 for (const item in data) {
-                    this.items.push({name: item})
+                    this.items.push({name: data[item], url: item})
                 }
-
             },
             submitUrl: async function (evt) {
                 evt.preventDefault()
-
 
                 const response = await fetch('http://localhost:3000/stream', {
                     method: 'post',
@@ -144,49 +139,11 @@
 
                 })
                 const data = await response.json()
-                console.log(data)
-                if (data.status === 'success') {
-                    this.items.push({name: this.urlForm.name, url: this.urlForm.url})
-                } else {
+                if (!data.status === 'success') {
                     console.log("An error occurred when adding the data stream")
                 }
                 await this.getAllStreams()
 
-            },
-            fetchStream: async function (url) {
-                console.log(url)
-                try {
-                    const {quads} = await rdfDereferencer.dereference(url)
-                    quads.on('data', (quad) => {
-                        if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path' && quad.object.value.includes('sosa')) {
-                            console.log(quad)
-                            const splitted = quad.object.value.split('/')
-                            this.feature_options.push({text: splitted[splitted.length - 1], value: quad.object.value})
-                        }
-                        //remove spinner
-                        this.isBusy = false;
-                    })
-                } catch (e) {
-                    console.error(e)
-                }
-            },
-            setVariant() {
-                this.fragment_status.forEach(function (item) {
-                    if (item["status"] === "Queued") {
-                        item["_cellVariants"] = {status: "danger"}
-                    } else if (item["status"] === "Done") {
-                        item["_cellVariants"] = {status: "success"}
-                    } else if (item["status"] === "In progress") {
-                        item["_cellVariants"] = {status: "warning"}
-                    }
-                })
-            },
-            remove(item, index) {
-                this.items.splice(index, 1);
-                this.fragmentation_options.splice(index, 1);
-            },
-            busy() {
-                this.isBusy = true;
             },
             edit(item, index) {
                 const encodedUrl = "/stream/?url=" + encodeURIComponent(this.items[index].url)

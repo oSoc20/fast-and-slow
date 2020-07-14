@@ -25,7 +25,6 @@ app.get('/streams', (req, res) => {
         let promises = []
         for (let key of keys) {
             // const key = keys[i]
-            console.log(key)
             let promise = client.get(key).then((result) => {
                 let name_list = JSON.parse(result)
                 streams[key] = name_list[name_list.length - 1]
@@ -36,6 +35,7 @@ app.get('/streams', (req, res) => {
         }
         await Promise.all(promises)
         console.log(streams)
+
         res.json(streams)
     }).catch((err) => {
         console.error(err)
@@ -43,44 +43,26 @@ app.get('/streams', (req, res) => {
 })
 
 
-// app.get('/streams', (req, res) => {
-//     let streams = {}
-//     client.keys('*', (err, keys) => {
-//         if (err) return console.log(err)
-//         if (keys) {
-//             async.map(keys, (key, cb) => {
-//                 client.get(key, (error, value) => {
-//                     if (error) return cb(error)
-//                     let name_list = JSON.parse(value)
-//                     streams[key] = name_list[name_list.length - 1]
-//                 })
-//             })
-//         }
-//     })
-//     console.log(streams)
-//     res.json(streams)
-// })
 
-
-app.post('/stream', function (req, res) {
+app.post('/streams', async function (req, res) {
     console.log(req.body)
     var url = req.body.url;
     var name = req.body.name;
-    client.get(url, function (err, result) {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
+    client.get(url).then(function (result) {
         var name_list = []
+        console.log(result)
         if (result) {
+            console.log(result)
             name_list = JSON.parse(result)
             name_list.push(name)
         } else {
             name_list = [name]
         }
-        client.set(url, JSON.stringify(name_list), redis.print)
-    })
+        console.log(url, name_list, name)
+        client.set(url, JSON.stringify(name_list))
+    }).catch((err) => console.error(err))
     res.json({status: 'success'})
+    console.log('here')
 })
 
 
