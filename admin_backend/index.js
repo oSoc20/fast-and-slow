@@ -5,10 +5,12 @@ const cors = require('cors');
 
 const app = express();
 const client = redis.createClient();
+const DOMAIN = 'http://example.com/'
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
+
 
 client.on('error', function (err) {
     console.log('Something went wrong ' + err);
@@ -45,17 +47,15 @@ app.get('/streams', (req, res) => {
     })
 })
 
-
-
 app.post('/streams', async function (req, res) {
     /**
      * Add a new stream
      */
     console.log(req.body)
-    var url = req.body.url;
-    var name = req.body.name;
+    let url = req.body.url;
+    let name = req.body.name;
     client.get(`streams:${url}`).then(function (result) {
-        var name_list = []
+        let name_list = []
         if (result) {
             name_list = JSON.parse(result)
             name_list.push(name)
@@ -67,6 +67,30 @@ app.post('/streams', async function (req, res) {
     res.json({status: 'success'})
 })
 
+app.post('/fragmentation', (req, res) => {
+    let url = req.body.url;
+    let name = req.body.name;
+    client.get(`streams:${url}`).then((result) => {
+        let name_list = JSON.parse(result)
+        let stream_name = name_list[name_list.length - 1]
+        let frag_url = DOMAIN + 'fragmentation/' + stream_name + '/' + name
+        res.json({url: frag_url})
+        client.get(`fragmentation:${frag_url}`).then((result) => {
+                if (result) {
+                    res.json({
+                        status: 'failed',
+                        msg: 'URL already exists'
+                    })
+                } else {
+                    client.set(`fragmentation:${frag_url}`, JSON.stringify({
+                        stream_name: url,
+                        name: name
+                    }))
+                }
+            }
+        )
+    })
+})
 
 app.listen(3000, () => {
     console.log('App started in port 3000')
