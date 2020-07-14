@@ -142,7 +142,7 @@
                 if (!data.status === 'success') {
                     console.log("An error occurred when adding the data stream")
                 }
-                // await this.getAllStreams()
+                await this.getAllStreams()
 
             },
             edit(item, index) {

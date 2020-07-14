@@ -31,9 +31,7 @@ app.get('/streams', (req, res) => {
             // const key = keys[i]
             let promise = client.get(key).then((result) => {
                 let name_list = JSON.parse(result)
-                let name = name_list[name_list.length - 1].split(':').slice(1).join(':')
-                console.log(name)
-                streams[key] = name
+                streams[key.split(':').slice(1).join(':')] = name_list[name_list.length - 1]
             }).catch((err) => {
                 console.error(err)
             })
