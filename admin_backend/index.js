@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/streams', (req, res) => {
+    /**
+     * Get all the streams with their latest name
+     * @type {{}}
+     */
     let streams = {}
     client.keys('*').then(async (keys) => {
         // for await (let i = 0; i < keys.length; i++) {
@@ -34,7 +38,6 @@ app.get('/streams', (req, res) => {
             promises.push(promise)
         }
         await Promise.all(promises)
-        console.log(streams)
 
         res.json(streams)
     }).catch((err) => {
@@ -45,24 +48,23 @@ app.get('/streams', (req, res) => {
 
 
 app.post('/streams', async function (req, res) {
+    /**
+     * Add a new stream
+     */
     console.log(req.body)
     var url = req.body.url;
     var name = req.body.name;
     client.get(url).then(function (result) {
         var name_list = []
-        console.log(result)
         if (result) {
-            console.log(result)
             name_list = JSON.parse(result)
             name_list.push(name)
         } else {
             name_list = [name]
         }
-        console.log(url, name_list, name)
         client.set(url, JSON.stringify(name_list))
     }).catch((err) => console.error(err))
     res.json({status: 'success'})
-    console.log('here')
 })
 
 
