@@ -25,10 +25,8 @@ app.get('/streams', (req, res) => {
      */
     let streams = {}
     client.keys('*').then(async (keys) => {
-        // for await (let i = 0; i < keys.length; i++) {
         let promises = []
         for (let key of keys) {
-            // const key = keys[i]
             let promise = client.get(key).then((result) => {
                 let name_list = JSON.parse(result)
                 streams[key] = name_list[name_list.length - 1]
