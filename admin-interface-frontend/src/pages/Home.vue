@@ -16,6 +16,7 @@
                         <th>Progress</th>
                         <th>Hidden</th>
                         <th>Loaded</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,31 +29,28 @@
                                 <vl-icon v-if="stream.loaded" icon="check-circle" mod-large />
                                 <vl-icon v-else icon="alert-circle" mod-large />
                             </td>
+                            <td>
+                                <vl-button icon="nav-right" to="/stream" mod-icon></vl-button>
+                            </td>
                         </tr>
                     </tbody>
                 </vl-data-table>
             </vl-column>
             <vl-column v-vl-align:center>
-                <vl-button icon="add" mod-icon> </vl-button>
-                <!-- <vl-button v-vl-modal-toggle="'modal-1'" icon="add" mod-icon ></vl-button>
-                <vl-modal
-                    closable
-                    id="modal-1"
-                    title="Fast and Slow">
-                    <DatastreamModal></DatastreamModal>
-                </vl-modal> -->
+                <vl-button v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon></vl-button>
+            </vl-column>
+            <vl-column>
+                <DatastreamModal/>
             </vl-column>
         </vl-grid>
     </vl-layout>
 </template>
 
 <script>
-//import {DatastreamModal} from '../components/DatastreamModal'
+import DatastreamModal from "../components/DatastreamModal";
     export default {
     name: "Home",
-    // components:{
-    //     DataStreamModal
-    // },
+    components: {DatastreamModal},
     data () {
         return{
             streams:[

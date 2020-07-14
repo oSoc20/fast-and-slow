@@ -40,21 +40,13 @@
                     </tbody>
                 </vl-data-table>
             </vl-column>
-            <vl-column v-vl-align:center>
-                <vl-button v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon></vl-button>
-            </vl-column>
-            <vl-column>
-                <DatastreamModal/>
-            </vl-column>
         </vl-grid>
     </vl-layout>
 </template>
 
 <script>
-    import DatastreamModal from "../components/DatastreamModal";
     export default {
     name: "Datastream",
-        components: {DatastreamModal},
         data () {
         return{
             streams:[
