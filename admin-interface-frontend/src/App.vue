@@ -34,5 +34,5 @@ export default {
     @import "~@govflanders/vl-ui-link/src/scss/link";
     @import "~@govflanders/vl-ui-icon/src/scss/icon";
     @import "~@govflanders/vl-ui-popover/src/scss/popover";
-    // @import "~@govflanders/vl-ui-modal/src/scss/modal";
+    @import "~@govflanders/vl-ui-modal/src/scss/modal";
 </style>

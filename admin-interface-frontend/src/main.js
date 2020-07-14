@@ -24,7 +24,8 @@ import {
   VlLinkListItem,
   VlLink,
   VlIcon,
-  // VlModal
+  VlModal,
+  VlModalToggle
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -44,8 +45,8 @@ Vue.component('vl-link-list', VlLinkList);
 Vue.component('vl-link-list-item', VlLinkListItem);
 Vue.component('vl-link', VlLink);
 Vue.component('vl-icon', VlIcon);
-// Vue.component('vl-modal', VlModal);
-// Vue.directive('vl-modal-toggle', VlModalToggle)
+Vue.component('vl-modal', VlModal);
+Vue.directive('vl-modal-toggle', VlModalToggle)
 
 Vue.use(VlCore);
 Vue.use(VlUtil);
