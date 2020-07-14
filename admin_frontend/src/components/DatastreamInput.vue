@@ -130,7 +130,7 @@
             submitUrl: async function (evt) {
                 evt.preventDefault()
 
-                const response = await fetch('http://localhost:3000/stream', {
+                const response = await fetch('http://localhost:3000/streams', {
                     method: 'post',
                     body: JSON.stringify({name: this.urlForm.name, url: this.urlForm.url}),
                     headers: {
@@ -142,7 +142,7 @@
                 if (!data.status === 'success') {
                     console.log("An error occurred when adding the data stream")
                 }
-                await this.getAllStreams()
+                // await this.getAllStreams()
 
             },
             edit(item, index) {

@@ -24,14 +24,16 @@ app.get('/streams', (req, res) => {
      * @type {{}}
      */
     let streams = {}
-    client.keys('*').then(async (keys) => {
+    client.keys('streams:*').then(async (keys) => {
         // for await (let i = 0; i < keys.length; i++) {
         let promises = []
         for (let key of keys) {
             // const key = keys[i]
             let promise = client.get(key).then((result) => {
                 let name_list = JSON.parse(result)
-                streams[key] = name_list[name_list.length - 1]
+                let name = name_list[name_list.length - 1].split(':').slice(1).join(':')
+                console.log(name)
+                streams[key] = name
             }).catch((err) => {
                 console.error(err)
             })
@@ -54,7 +56,7 @@ app.post('/streams', async function (req, res) {
     console.log(req.body)
     var url = req.body.url;
     var name = req.body.name;
-    client.get(url).then(function (result) {
+    client.get(`streams:${url}`).then(function (result) {
         var name_list = []
         if (result) {
             name_list = JSON.parse(result)
@@ -62,7 +64,7 @@ app.post('/streams', async function (req, res) {
         } else {
             name_list = [name]
         }
-        client.set(url, JSON.stringify(name_list))
+        client.set(`streams:${url}`, JSON.stringify(name_list))
     }).catch((err) => console.error(err))
     res.json({status: 'success'})
 })
