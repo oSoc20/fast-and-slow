@@ -5,7 +5,10 @@
                 <vl-title tag-name="h1">Fast and Slow</vl-title>
             </vl-column>
             <vl-column>
-                <vl-title tag-name="h2">Event stream overview</vl-title>
+                <vl-title tag-name="h2">
+                    Event stream overview
+                    <vl-button v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon-before mod-narrow>Add new</vl-button>
+                </vl-title>
             </vl-column>
             <vl-column>
                 <vl-data-table mod-line>
@@ -35,9 +38,6 @@
                         </tr>
                     </tbody>
                 </vl-data-table>
-            </vl-column>
-            <vl-column v-vl-align:center>
-                <vl-button v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon></vl-button>
             </vl-column>
             <vl-column>
                 <DatastreamModal/>
@@ -77,5 +77,4 @@ import DatastreamModal from "../components/DatastreamModal";
 </script>
 
 <style scoped>
-
 </style>
