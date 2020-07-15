@@ -95,6 +95,20 @@ app.get('/streams/properties/:url', (req, res) => {
         })
 })
 
+app.get('/streams/fragmentation', (req, res) => {
+    let url = req.body.url;
+    Stream.find({url : url})
+        .populate('fragmentations')
+        .then(result => {
+            console.log(result.fragmentations)
+            res.json({status: 'success', fragmentations: result.fragmentations})
+        })
+        .catch(err => {
+            console.error(err)
+            res.json({status: 'failure', msg: "url not present"})
+        })
+})
+
 app.get('/fragmentation', (req, res) => {
     let url = req.body.url;
     Fragmentation.findOne({url: url})
