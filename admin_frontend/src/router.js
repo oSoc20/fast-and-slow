@@ -12,7 +12,7 @@ const router = new Router({
                 import('./components/DatastreamInput')
         },
         {
-            path: '/stream/',
+            path: '/streams/',
             component: () =>
                 import('./components/DatastreamPage')
         }

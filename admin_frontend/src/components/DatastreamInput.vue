@@ -124,7 +124,7 @@
 
                 this.items = []
                 for (const item in data) {
-                    this.items.push({name: data[item], url: item})
+                    this.items.push({name: data[item].name, url: data[item].url})
                 }
             },
             submitUrl: async function (evt) {
@@ -146,7 +146,7 @@
 
             },
             edit(item, index) {
-                const encodedUrl = "/stream/?url=" + encodeURIComponent(this.items[index].url)
+                const encodedUrl = "/streams/?url=" + encodeURIComponent(this.items[index].url)
                 this.$router.push(encodedUrl)
             }
         },

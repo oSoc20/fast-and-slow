@@ -45,7 +45,7 @@ app.post('/streams', async function (req, res) {
     let url = req.body.url;
     let name = req.body.name;
 
-    Stream.findOne({url: url}, {name: 1})
+    Stream.findOne({url: url}, {name: name})
         .then(result => {
             const stream = new Stream({
                 url: url,
