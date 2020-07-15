@@ -95,8 +95,8 @@ app.get('/streams/properties/:url', (req, res) => {
         })
 })
 
-app.get('/streams/fragmentation/:url', (req, res) => {
-    const url = req.params.url;
+app.get('/streams/fragmentation', (req, res) => {
+    const url = req.query.url;
     Stream.find({url : url})
         .populate('fragmentations')
         .then(result => {
