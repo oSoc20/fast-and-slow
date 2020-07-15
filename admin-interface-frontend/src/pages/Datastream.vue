@@ -103,5 +103,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
+  span.vl-icon.vl-vi.vl-vi-up-down-arrows{
+    justify-content: start !important;
+  }
 </style>
