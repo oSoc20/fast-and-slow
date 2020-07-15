@@ -14,13 +14,7 @@
                         <label><b>Feature options</b></label>
 
                         <!-- show spinner if loading -->
-                        <template v-if="isBusy">
-                            <div>
-                                <b-spinner></b-spinner>
-                            </div>
-                        </template>
-
-                        <b-form-checkbox-group v-else :options="feature_options" required>
+                        <b-form-checkbox-group :options="feature_options" required>
                         </b-form-checkbox-group>
 
                     </b-form-group>
@@ -32,7 +26,6 @@
 
 <script>
     import 'setimmediate';
-
 
     export default {
         name: "DatastreamInput",
@@ -52,19 +45,13 @@
             this.loadProperties(this.$route.query.url)
         },
         methods: {
-            loadProperties: async (url) => {
-                const response = await fetch('http://localhost:3000/streams', {
-                    method: 'get',
-                    body: JSON.stringify({url: url}),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-
-                })
+            loadProperties: async function(url) {
+                const response = await fetch(`http://localhost:3000/streams/properties/${encodeURIComponent(url)}`)
                 const data = await response.json()
-                for (const prop in data) {
-                    this.feature_options.push({text: prop, value: data[prop]})
-                }
+                console.log(data)
+                data.forEach(prop => {
+                    this.feature_options.push({text: prop.text, value: prop.value})
+                })
             }
         }
     }
