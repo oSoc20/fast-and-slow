@@ -32,8 +32,13 @@ app.get('/streams', (req, res) => {
     Stream.find({})
         .exec()
         .then(result => {
-            console.log(result)
-            res.json(result)
+            let streams = []
+            result.forEach(stream => {
+                const name = stream.name[stream.name.length -1]
+                streams.push({name: name, url: stream.url})
+            })
+            console.log(streams)
+            res.json(streams)
         })
         .catch(err => {
             console.error(err)
@@ -53,6 +58,7 @@ app.post('/streams', async function (req, res) {
             if (result !== null) {
                 result.name.push(name);
                 result.save()
+                res.json({status: 'success'})
             } else {
                 loadProperties(url)
                     .then( props => {
@@ -62,15 +68,11 @@ app.post('/streams', async function (req, res) {
                             properties: props
                         })
                         stream.save()
-                            .then((result) => {})
+                            .then((result) => {res.json({status: 'success'})
+                        })
                             .catch(err => console.error(err))
                     })
-
-
             }
-
-            res.json({status: 'success'})
-
         })
         .catch(err => {
             res.json({status: 'failure'})
