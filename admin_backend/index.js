@@ -180,7 +180,7 @@ app.post('/fragmentation/enable', (req, res) => {
         })
         .catch(err => {
             console.error(err)
-            res.json({status: 'failure', msg: "stream not found in database"})
+            res.json({status: 'failure', msg: "Fragmentation not found in database"})
         })
 })
 
