@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 Vue.config.productionTip = false;
-// import { VlModalToggle } from '@govflanders/vl-ui-modal';
+
 import {
   VlCore,
   VlUtil,
@@ -26,7 +26,9 @@ import {
   VlIcon,
   VlModal,
   VlModalToggle,
-  VlFormMessageAnnotation
+  VlFormMessageAnnotation,
+  VlInfoTile,
+  VlEqualHeight
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -48,9 +50,11 @@ Vue.component('vl-link', VlLink);
 Vue.component('vl-icon', VlIcon);
 Vue.component('vl-modal', VlModal);
 Vue.component('vl-form-message-annotation', VlFormMessageAnnotation);
+Vue.component('vl-info-tile', VlInfoTile);
 
 
-Vue.directive('vl-modal-toggle', VlModalToggle)
+Vue.directive('vl-modal-toggle', VlModalToggle);
+Vue.directive('vl-equal-height', VlEqualHeight);
 
 Vue.use(VlCore);
 Vue.use(VlUtil);
