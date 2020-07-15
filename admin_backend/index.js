@@ -118,7 +118,7 @@ app.post('/fragmentation', (req, res) => {
 
     console.log(req.body)
 
-    Stream.findOne({url: stream_url}, {_id: 1})
+    Stream.findOne({url: stream_url})
         .then(stream_result => {
             if (stream_result === null) {
                 res.json({status: 'failure', msg: 'stream not found'})
@@ -152,7 +152,17 @@ app.post('/fragmentation', (req, res) => {
                                             stream: stream_result._id
                                         })
                                         fragmentation.save()
-                                            .then(res.json({status: 'success', url: new_url}))
+                                            .then(frag_result => {
+                                                stream_result.fragmentations.push(frag_result._id)
+                                                stream_result.save()
+                                                    .then(
+                                                        res.json({status: 'success', url: new_url})
+                                                    )
+                                                    .catch(err => {
+                                                        console.error(err)
+                                                        res.json({status: 'failure'})
+                                                    })
+                                            })
                                             .catch(err => {
                                                 console.error(err)
                                                 res.json({status: 'failure'})
