@@ -77,6 +77,21 @@ app.post('/streams', async function (req, res) {
         })
 })
 
+app.get('/streams/properties', (req, res) => {
+    /**
+     * Get all the streams with their latest name
+     * @type {{}}
+     */
+    const url = req.body.url
+    Stream.findOne({url: url})
+        .then(result => {
+            res.json(result.properties)
+        })
+        .catch(err => {
+            console.error(err)
+        })
+})
+
 app.get('/fragmentation', (req, res) => {
     let url = req.body.url;
 
