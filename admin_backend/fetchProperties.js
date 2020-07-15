@@ -12,28 +12,34 @@ async function load_properties(url) {
     const properties = {}
     let result = []
 
-    try {
-        const {quads} = await rdfDereferencer.dereference(url)
-        quads.on('data', (quad) => {
-            if (quad.predicate.value === 'https://www.w3.org/ns/shacl#node') {
-                nodes[quad.object.value] = quad.subject.value
-            } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#property') {
-                properties[quad.object.value] = quad.subject.value
-            } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path') {
-                features[quad.subject.value] = {'subject': quad.object.value, 'grouped': false}
-            }
-        })
-            .on('end', () => {
-                //remove spinner
-                const feature_values = combine(features, nodes, properties)
-                for (const feature in feature_values) {
-                    result.push({text: feature, value: feature_values[feature]})
+    return new Promise(async (res) => {
+        try {
+            const {quads} = await rdfDereferencer.dereference(url)
+            quads.on('data', (quad) => {
+                if (quad.predicate.value === 'https://www.w3.org/ns/shacl#node') {
+                    nodes[quad.object.value] = quad.subject.value
+                } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#property') {
+                    properties[quad.object.value] = quad.subject.value
+                } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path') {
+                    features[quad.subject.value] = {'subject': quad.object.value, 'grouped': false}
                 }
             })
-    } catch (e) {
-        console.error(e)
-    }
-    return result
+                .on('end', async () => {
+
+                    const feature_values = combine(features, nodes, properties)
+                    for (const feature in feature_values) {
+                        result.push({text: feature, value: feature_values[feature]})
+                    }
+                    res(result)
+                })
+
+
+
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
 
 }
 
