@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const streamSchema = mongoose.Schema({
     url: String,
-    name: [String]
+    name: [String],
+    properties: [{name: String, value: [String]}]
 })
 
 module.exports = mongoose.model('Stream', streamSchema)

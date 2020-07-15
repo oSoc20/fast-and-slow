@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 const Stream = require('./models/Stream')
 const Fragmentation = require('./models/Fragmentation')
 
+
+const properties = require('./fetchProperties')
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -47,18 +50,29 @@ app.post('/streams', async function (req, res) {
 
     Stream.findOne({url: url}, {name: name})
         .then(result => {
-            const stream = new Stream({
-                url: url,
-                name: [name]
-            })
+
             console.log(result)
             if (result !== null) {
                 result.name.push(name);
                 result.save()
             } else {
-                stream.save().then((result) => {
-                }).catch(err => console.error(err))
+                properties.load_properties(url)
+                    .then( props => {
+                        console.log(props)
+                        const stream = new Stream({
+                            url: url,
+                            name: [name],
+                            properties: props
+                        })
+                        console.log(stream)
+                        stream.save()
+                            .then((result) => {})
+                            .catch(err => console.error(err))
+                    })
+
+
             }
+
             res.json({status: 'success'})
 
         })
