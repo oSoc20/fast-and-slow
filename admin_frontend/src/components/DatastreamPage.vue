@@ -46,7 +46,7 @@
         },
         methods: {
             loadProperties: async function(url) {
-                const response = await fetch(`http://localhost:3000/streams/properties/${encodeURIComponent(url)}`)
+                const response = await fetch(`http://localhost:3000/streams/properties?url=${encodeURIComponent(url)}`)
                 const data = await response.json()
                 console.log(data)
                 data.forEach(prop => {

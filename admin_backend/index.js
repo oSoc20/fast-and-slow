@@ -97,10 +97,9 @@ app.get('/streams/properties', (req, res) => {
 
 app.get('/streams/fragmentation', (req, res) => {
     const url = req.query.url;
-    Stream.find({url : url})
+    Stream.findOne({url : url})
         .populate('fragmentations')
         .then(result => {
-            console.log(result.fragmentations)
             res.json({status: 'success', fragmentations: result.fragmentations})
         })
         .catch(err => {
