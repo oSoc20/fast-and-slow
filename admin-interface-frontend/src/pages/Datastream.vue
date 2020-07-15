@@ -4,16 +4,16 @@
       <vl-column>
         <vl-title tag-name="h1">Fast and Slow</vl-title>
       </vl-column>
-
-      <vl-column>
-        <vl-action-group mod-space-between>
-          <vl-dropdown-navigation label="Collections">
+      <vl-column width = "10">
+          <vl-dropdown-navigation :label="'Collection: ' + selectedStream">
             <vl-link-list>
-              <vl-link-list-item v-for="stream in streams" :key="stream.name">
-                <vl-link mod-block href="#">{{stream.name}}</vl-link>
+              <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
+                <vl-link @click="changeStream(index)" mod-block href="#">{{stream.name}}</vl-link>
               </vl-link-list-item>
             </vl-link-list>
           </vl-dropdown-navigation>
+      </vl-column>
+      <vl-column width="2">
           <vl-button
             v-vl-positioning:float-right
             icon="file-edit"
@@ -21,10 +21,6 @@
             mod-narrow
             v-vl-modal-toggle="'editstream-modal'"
           >Edit</vl-button>
-        </vl-action-group>
-      </vl-column>
-      <vl-column>
-        <EditStreamModal></EditStreamModal>
       </vl-column>
       <vl-column>
         <vl-data-table mod-line>
@@ -45,7 +41,7 @@
               <td>
                 <vl-checkbox
                   :id="'checkbox-' + fragmentation"
-                  name="checkbox-name-"
+                  :name="'checkbox-name-' + fragmentation"
                   v-model="fragmentation.enabled"
                   :val="fragmentation.enabled"
                   mod-switch
@@ -58,6 +54,9 @@
           </tbody>
         </vl-data-table>
       </vl-column>
+      <vl-column>
+        <EditStreamModal></EditStreamModal>
+      </vl-column>
     </vl-grid>
   </vl-layout>
 </template>
@@ -68,8 +67,7 @@ export default {
   name: "Datastream",
   components: { EditStreamModal },
   data() {
-    return {
-      streams: [
+    var streams =  [
         {
           name: "Address",
           url: "http://base-registries-stream.osoc.be/address"
@@ -78,8 +76,9 @@ export default {
           name: "Observations",
           url: "http://streams.datapiloten.be/observations"
         }
-      ],
-      fragmentations: [
+    ];
+
+    var fragmentations = [
         {
           strategy: "Geospatial",
           endpoint: "http://base-registries-stream.osoc.be/address",
@@ -92,12 +91,20 @@ export default {
           properties: "sensorObservations",
           enabled: false
         }
-      ]
+    ];
+    var selectedStream = streams[0].name;
+    return {
+      streams,
+      fragmentations,
+      selectedStream
     };
   },
   methods: {
     deleteFragmentation(index) {
       this.fragmentations.splice(index, 1);
+    },
+    changeStream(index){
+      this.selectedStream = this.streams[index].name;
     }
   }
 };
