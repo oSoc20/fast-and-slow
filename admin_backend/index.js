@@ -62,7 +62,7 @@ app.post('/streams', async function (req, res) {
                             name: [name],
                             properties: props
                         })
-                        console.log(stream)
+                        console.log(stream.properties)
                         stream.save()
                             .then((result) => {})
                             .catch(err => console.error(err))
