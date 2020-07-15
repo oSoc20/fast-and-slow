@@ -1,20 +1,21 @@
 const express = require('express');
-const redis = require('async-redis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose')
+
+const Stream = require('./models/Stream')
+const Fragmentation = require('./models/Fragmentation')
 
 const app = express();
-const client = redis.createClient();
-const DOMAIN = 'http://example.com/'
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
 
+const db_url = 'mongodb://localhost/testDB'
+mongoose.connect(db_url)
 
-client.on('error', function (err) {
-    console.log('Something went wrong ' + err);
-});
+const DOMAIN = "http://example.com/"
 
 app.get('/', (req, res) => {
     res.send('Something')
@@ -25,71 +26,116 @@ app.get('/streams', (req, res) => {
      * Get all the streams with their latest name
      * @type {{}}
      */
-    let streams = {}
-    client.keys('streams:*').then(async (keys) => {
-        // for await (let i = 0; i < keys.length; i++) {
-        let promises = []
-        for (let key of keys) {
-            // const key = keys[i]
-            let promise = client.get(key).then((result) => {
-                let name_list = JSON.parse(result)
-                streams[key.split(':').slice(1).join(':')] = name_list[name_list.length - 1]
-            }).catch((err) => {
-                console.error(err)
-            })
-            promises.push(promise)
-        }
-        await Promise.all(promises)
-
-        res.json(streams)
-    }).catch((err) => {
-        console.error(err)
-    })
+    Stream.find({})
+        .exec()
+        .then(result => {
+            console.log(result)
+            res.json(result)
+        })
+        .catch(err => {
+            console.error(err)
+        })
 })
 
 app.post('/streams', async function (req, res) {
     /**
      * Add a new stream
      */
-    console.log(req.body)
+    console.log('body:', req.body)
     let url = req.body.url;
     let name = req.body.name;
-    client.get(`streams:${url}`).then(function (result) {
-        let name_list = []
-        if (result) {
-            name_list = JSON.parse(result)
-            name_list.push(name)
-        } else {
-            name_list = [name]
-        }
-        client.set(`streams:${url}`, JSON.stringify(name_list))
-    }).catch((err) => console.error(err))
-    res.json({status: 'success'})
+
+    Stream.findOne({url: url}, {name: 1})
+        .then(result => {
+            const stream = new Stream({
+                url: url,
+                name: [name]
+            })
+            console.log(result)
+            if (result !== null) {
+                result.name.push(name);
+                result.save()
+            } else {
+                stream.save().then((result) => {
+                }).catch(err => console.error(err))
+            }
+            res.json({status: 'success'})
+
+        })
+        .catch(err => {
+            res.json({status: 'failure'})
+        })
+})
+
+app.get('/fragmentation', (req, res) => {
+    let url = req.body.url;
+
+    Fragmentation.findOne({url: url})
+        .populate('stream')
+        .then(result => {
+            console.log(result)
+            console.log(result.stream.name)
+            res.json({status: 'success', content: result})
+        })
+        .catch(err => {
+            console.error(err)
+            res.json({status: 'failure', msg: "url not present"})
+        })
 })
 
 app.post('/fragmentation', (req, res) => {
     let url = req.body.url;
-    let name = req.body.name;
-    client.get(`streams:${url}`).then((result) => {
-        let name_list = JSON.parse(result)
-        let stream_name = name_list[name_list.length - 1]
-        let frag_url = DOMAIN + 'fragmentation/' + stream_name + '/' + name
-        res.json({url: frag_url})
-        client.get(`fragmentation:${frag_url}`).then((result) => {
-                if (result) {
-                    res.json({
-                        status: 'failed',
-                        msg: 'URL already exists'
+    let stream_url = req.body.stream;
+    let strategy = req.body.strategy;
+    let property = req.body.property;
+
+    console.log(req.body)
+
+    Stream.findOne({url: stream_url}, {_id: 1})
+        .then(stream_result => {
+            if (stream_result === null) {
+                res.json({status: 'failure', msg: 'stream not found'})
+            } else {
+                const new_url = DOMAIN + 'fragmentations/' + url
+
+                Fragmentation.findOne({url: new_url})
+                    .then(check_result => {
+                        if (check_result) {
+                            res.json({status: 'warning', msg: 'url is already in use'})
+                        } else {
+                            Fragmentation.findOne({strategy: strategy, property: property, stream: stream_result._id})
+                                .then(result => {
+                                    if (result !== null) {
+                                        console.log('present')
+                                        result.url.push(new_url)
+                                        result.save()
+                                            .then(
+                                                res.json({status: 'success', url: new_url})
+                                            )
+                                            .catch(err => {
+                                                    console.error(err)
+                                                    res.json({status: 'failure'})
+                                                }
+                                            )
+                                    } else {
+                                        const fragmentation = new Fragmentation({
+                                            url: new_url,
+                                            strategy: strategy,
+                                            property: property,
+                                            stream: stream_result._id
+                                        })
+                                        fragmentation.save()
+                                            .then(res.json({status: 'success', url: new_url}))
+                                            .catch(err => {
+                                                console.error(err)
+                                                res.json({status: 'failure'})
+                                            })
+                                    }
+                                })
+                        }
                     })
-                } else {
-                    client.set(`fragmentation:${frag_url}`, JSON.stringify({
-                        stream_name: url,
-                        name: name
-                    }))
-                }
             }
-        )
-    })
+        })
 })
 
 app.listen(3000, () => {
