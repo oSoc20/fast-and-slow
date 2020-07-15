@@ -7,7 +7,7 @@ const Stream = require('./models/Stream')
 const Fragmentation = require('./models/Fragmentation')
 
 
-const properties = require('./fetchProperties')
+const loadProperties = require('./fetchProperties')
 
 const app = express();
 
@@ -50,13 +50,11 @@ app.post('/streams', async function (req, res) {
 
     Stream.findOne({url: url}, {name: name})
         .then(result => {
-
-            console.log(result)
             if (result !== null) {
                 result.name.push(name);
                 result.save()
             } else {
-                properties.load_properties(url)
+                loadProperties(url)
                     .then( props => {
                         console.log(props)
                         const stream = new Stream({

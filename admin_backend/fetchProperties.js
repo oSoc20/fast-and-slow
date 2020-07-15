@@ -3,38 +3,41 @@ const rdfDereferencer = require("rdf-dereference").default;
 /**
  * Fetch a specific data stream and add parameters to list
  * @param url: Url that defines the data stream
- * @returns {Promise<void>}
+ * @returns {Promise<[]>}
  */
-module.exports = {
-    load_properties: async function (url) {
-        const features = {}
-        const nodes = {}
-        const properties = {}
-        try {
-            const {quads} = await rdfDereferencer.dereference(url)
-            quads.on('data', (quad) => {
-                if (quad.predicate.value === 'https://www.w3.org/ns/shacl#node') {
-                    nodes[quad.object.value] = quad.subject.value
-                } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#property') {
-                    properties[quad.object.value] = quad.subject.value
-                } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path') {
-                    features[quad.subject.value] = {'subject': quad.object.value, 'grouped': false}
+
+async function load_properties(url) {
+    const features = {}
+    const nodes = {}
+    const properties = {}
+    let result = []
+
+    try {
+        const {quads} = await rdfDereferencer.dereference(url)
+        quads.on('data', (quad) => {
+            if (quad.predicate.value === 'https://www.w3.org/ns/shacl#node') {
+                nodes[quad.object.value] = quad.subject.value
+            } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#property') {
+                properties[quad.object.value] = quad.subject.value
+            } else if (quad.predicate.value === 'https://www.w3.org/ns/shacl#path') {
+                features[quad.subject.value] = {'subject': quad.object.value, 'grouped': false}
+            }
+        })
+            .on('end', () => {
+                //remove spinner
+                const feature_values = combine(features, nodes, properties)
+                for (const feature in feature_values) {
+                    result.push({text: feature, value: feature_values[feature]})
                 }
             })
-                .on('end', () => {
-                    //remove spinner
-                    const feature_values = combine(features, nodes, properties)
-                    const result = []
-                    for (const feature in feature_values) {
-                        result.push({text: feature, value: feature_values[feature]})
-                    }
-                    return result
-                })
-        } catch (e) {
-            console.error(e)
-        }
+    } catch (e) {
+        console.error(e)
     }
+    return result
+
 }
+
+module.exports = load_properties
 
 /**
  * Combine nested parameters
