@@ -13,6 +13,8 @@ const router = new Router({
         },
         {
             path:'/stream',
+            name: "EventstreamDetails",
+            props: true,
             component: () =>
                 import('./pages/Datastream')
         }

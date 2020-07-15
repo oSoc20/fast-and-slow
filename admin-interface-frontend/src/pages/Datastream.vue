@@ -99,6 +99,12 @@ export default {
       selectedStream
     };
   },
+  props:{
+    eventStreamUrl:{
+      type: String,
+      required: true
+    }
+  },
   methods: {
     deleteFragmentation(index) {
       this.fragmentations.splice(index, 1);

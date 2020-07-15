@@ -16,13 +16,11 @@
                         :title="line.name"
                         :subtitle="line.description">
 
-                    <div class="container-scoped">
                         <strong>Is loaded: </strong>
                         <vl-icon v-if="line.loaded" icon="check-circle" mod-large/>
                         <vl-icon v-else icon="alert-circle" mod-large/>
                         <br>
                         <strong>Fragmentation: </strong> {{line.fragmentation}}
-                    </div>
                 </vl-info-tile>
             </vl-column>
 
@@ -58,7 +56,10 @@
                             <vl-icon v-else icon="alert-circle" mod-large/>
                         </td>
                         <td>
-                            <vl-button to="/stream" mod-narrow> View details</vl-button>
+                            <router-link :to="{ name: 'EventstreamDetails', params: {eventStreamUrl:stream.url}}">
+                                <vl-button  mod-narrow> View details</vl-button>
+                            </router-link>
+                            
                         </td>
                     </tr>
                     </tbody>
@@ -136,9 +137,5 @@
 </script>
 
 <style lang="scss">
-    .container-scoped{
-        position: absolute;
-        bottom: 0px ;
-        margin-bottom: 1em;
-    }
+
 </style>
