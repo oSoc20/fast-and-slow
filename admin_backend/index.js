@@ -165,6 +165,25 @@ app.post('/fragmentation', (req, res) => {
         })
 })
 
+/**
+ * enable or disable a fragmentation
+ */
+app.post('/fragmentation/enable', (req, res) => {
+    const enabled = req.body.enabled
+    const url = req.body.url
+
+    Fragmentation.findOne({url: url})
+        .then(result => {
+            result.enabled = enabled
+            result.save()
+            res.json({status: 'success'})
+        })
+        .catch(err => {
+            console.error(err)
+            res.json({status: 'failure', msg: "stream not found in database"})
+        })
+})
+
 app.listen(3000, () => {
     console.log('App started in port 3000')
 })

@@ -4,7 +4,7 @@ const fragmentationSchema = mongoose.Schema({
     url: [String],
     strategy: String,
     property: String,
-    active: Boolean,
+    enabled: {type: Boolean, default: true},
     stream: { type: mongoose.Schema.Types.ObjectId, ref: 'Stream' }
 })
 
