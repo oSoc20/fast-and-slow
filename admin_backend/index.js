@@ -56,13 +56,11 @@ app.post('/streams', async function (req, res) {
             } else {
                 loadProperties(url)
                     .then( props => {
-                        console.log(props)
                         const stream = new Stream({
                             url: url,
                             name: [name],
                             properties: props
                         })
-                        console.log(stream.properties)
                         stream.save()
                             .then((result) => {})
                             .catch(err => console.error(err))
