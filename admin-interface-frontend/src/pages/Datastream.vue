@@ -128,18 +128,7 @@ export default {
     goBack() {
       return this.$router.go(-1);
     },
-    loadProperties: async function(url) {
-      const response = await fetch(
-        `http://localhost:3000/streams/properties?url=${encodeURIComponent(
-          url
-        )}`
-      );
-      const data = await response.json();
-      console.log("properties: ", data);
-      data.forEach(prop => {
-        this.feature_options.push({ text: prop.text, value: prop.value });
-      });
-    },
+
     getFragmentations: async function(url) {
       const response = await fetch(
         `http://localhost:3000/streams/fragmentation?url=${encodeURIComponent(
@@ -157,24 +146,6 @@ export default {
           enabled: frag.enabled
         });
       });
-    },
-    addFragmentation: async function() {
-      const response = await fetch("http://localhost:3000/fragmentation", {
-        method: "post",
-        body: JSON.stringify({
-          url: "testconfig",
-          stream: "http://base-registries-stream.osoc.be/address?page=1",
-          strategy: "teststrategy",
-          property: "testproperty"
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      const data = await response.json();
-      if (!data.status === "success") {
-        console.log("An error occurred when adding the fragmentation");
-      }
     },
     enableFragmentation: async function() {
       const response = await fetch(
