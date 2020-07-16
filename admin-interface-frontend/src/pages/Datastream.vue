@@ -94,7 +94,7 @@
         <EditStreamModal></EditStreamModal>
       </vl-column>
       <vl-column>
-        <FragmentationModal></FragmentationModal>
+        <FragmentationModal @getFragmentations="getFragmentations"></FragmentationModal>
       </vl-column>
     </vl-grid>
   </vl-layout>

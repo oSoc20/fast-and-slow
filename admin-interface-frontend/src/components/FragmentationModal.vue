@@ -28,7 +28,7 @@
                             <vl-radio-tile v-for="(property, index) in properties" :key="property.text"
                                 v-model="selectedProperty"
                                 :name="'radio-tile-name-property' + index"  
-                                :value="property.value"
+                                :value="property.text"
                                 :id="'vl-radio-tile-property' + index"
                                 :title="property.text"
                                 >
@@ -38,7 +38,7 @@
                         <vl-column>
                             <vl-action-group mod-align-right>
                                 <vl-button mod-secondary v-vl-modal-toggle="'fragmentation-modal'">Cancel</vl-button>
-                                <vl-button>Add</vl-button>
+                                <vl-button @click="addFragmentation" v-vl-modal-toggle="'fragmentation-modal'">Add</vl-button>
                             </vl-action-group>
                         </vl-column>
                     </vl-form-grid>
@@ -92,10 +92,10 @@
                 const response = await fetch("http://localhost:3000/fragmentation", {
                     method: "post",
                     body: JSON.stringify({
-                        url: "testconfig",
-                        stream: "http://base-registries-stream.osoc.be/address?page=1",
-                        strategy: "teststrategy",
-                        property: "testproperty"
+                        url: this.fragmentationName,
+                        stream: this.$route.query.eventStreamUrl,
+                        strategy: this.selectedStrategy,
+                        property: this.selectedProperty
                     }),
                     headers: {
                         "Content-Type": "application/json"
@@ -105,6 +105,8 @@
                 if (!data.status === "success") {
                     console.log("An error occurred when adding the fragmentation");
                 }
+
+                await this.$emit("getFragmentations", this.$route.query.eventStreamUrl)
             },
 
         },
