@@ -37,48 +37,7 @@
                         </template>
                     </b-table>
                 </b-col>
-
-                <!--                <b-col cols="5">-->
-                <!--                    <b-row class="justify-content-md-center mb-5">-->
-                <!--                        <b-form-group>-->
-                <!--                            <label><b>Fragmentation options</b></label>-->
-                <!--                            <b-form-radio-group :options="fragmentation_options" required>-->
-                <!--                            </b-form-radio-group>-->
-                <!--                        </b-form-group>-->
-                <!--                    </b-row>-->
-                <!--                    <b-row class="justify-content-md-center mb-5">-->
-                <!--                        <b-form-group>-->
-                <!--                            <label><b>Feature options</b></label>-->
-
-                <!--                            &lt;!&ndash; show spinner if loading &ndash;&gt;-->
-                <!--                            <template v-if="isBusy">-->
-                <!--                                <div>-->
-                <!--                                    <b-spinner ></b-spinner>-->
-                <!--                                </div>-->
-                <!--                            </template>-->
-
-                <!--                            <b-form-checkbox-group v-else :options="feature_options" required>-->
-                <!--                            </b-form-checkbox-group>-->
-                <!--                            -->
-                <!--                        </b-form-group>-->
-                <!--                    </b-row>-->
-
-                <!--                </b-col>-->
-
             </b-row>
-            <!-- <b-row class="justify-content-md-center mb-5">
-                <b-col cols="5">
-                    <b-button variant="primary">Build fragmentation</b-button>
-                </b-col>
-                <b-col cols="5">
-                    This will display a unique URI
-                </b-col>
-            </b-row>
-            <b-row class="justify-content-md-center mb-5">
-                <b-col cols="10">
-                    <b-table :items="fragment_status"></b-table>
-                </b-col>
-            </b-row> -->
         </b-form>
     </div>
 </template>
