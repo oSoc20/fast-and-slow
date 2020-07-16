@@ -111,12 +111,12 @@ export default {
     return {
       streams: [],
       fragmentations: [],
-      selectedStream: streams[0].name
-    };
+      selectedStream: ""
+    }
   },
   created() {
-    this.getAllStreams(this.$route.query.url);
-    this.getFragmentations(this.$route.query.url);
+    this.getAllStreams(this.$route.query.eventStreamUrl);
+    this.getFragmentations(this.$route.query.eventStreamUrl);
   },
   methods: {
     deleteFragmentation(index) {
@@ -148,7 +148,6 @@ export default {
       );
       const data = await response.json();
       const fragmentations = data.fragmentations;
-      console.log("fragmentations: ", fragmentations);
       this.fragmentations = [];
       fragmentations.forEach(frag => {
         this.fragmentations.push({
@@ -198,16 +197,20 @@ export default {
         );
       }
     },
-    getAllStreams: async function() {
+    getAllStreams: async function(url) {
       const response = await fetch("http://localhost:3000/streams");
       const data = await response.json();
 
       this.streams = [];
       for (const item in data) {
-        this.streams.push({
+        let add_stream = {
           name: data[item].name,
           url: data[item].url
-        });
+        }
+        this.streams.push(add_stream);
+        if (add_stream.url === url) {
+          this.selectedStream = this.streams[0].name
+        }
       }
     }
   }
