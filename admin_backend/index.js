@@ -2,11 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose')
-
 const Stream = require('./models/Stream')
 const Fragmentation = require('./models/Fragmentation')
-
-
 const loadProperties = require('./fetchProperties')
 
 const app = express();
@@ -15,20 +12,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
 
+//
 const db_url = 'mongodb://localhost/testDB'
 mongoose.connect(db_url)
 
 const DOMAIN = "http://example.com/"
 
-app.get('/', (req, res) => {
-    res.send('Something')
-})
-
+/**
+ * Get all the streams with their latest name
+ */
 app.get('/streams', (req, res) => {
-    /**
-     * Get all the streams with their latest name
-     * @type {{}}
-     */
     Stream.find({})
         .exec()
         .then(result => {
@@ -45,10 +38,10 @@ app.get('/streams', (req, res) => {
         })
 })
 
+/**
+ * Add a new stream
+ */
 app.post('/streams', async function (req, res) {
-    /**
-     * Add a new stream
-     */
     console.log('body:', req.body)
     let url = req.body.url;
     let name = req.body.name;
@@ -79,13 +72,12 @@ app.post('/streams', async function (req, res) {
         })
 })
 
+/**
+ * Get all the properties of a stream
+ */
 app.get('/streams/properties', (req, res) => {
-    /**
-     * Get all the streams with their latest name
-     * @type {{}}
-     */
+    // The stream URL
     const url = req.query.url
-
     Stream.findOne({url: url})
         .then(result => {
             res.json(result.properties)
@@ -95,7 +87,11 @@ app.get('/streams/properties', (req, res) => {
         })
 })
 
+/**
+ * Get all the fragmentations available for a stream
+ */
 app.get('/streams/fragmentation', (req, res) => {
+    // The stream URL
     const url = req.query.url;
     Stream.findOne({url : url})
         .populate('fragmentations')
@@ -108,6 +104,9 @@ app.get('/streams/fragmentation', (req, res) => {
         })
 })
 
+/**
+ * Get all the fragmentations in the database
+ */
 app.get('/fragmentation', (req, res) => {
     let url = req.body.url;
     Fragmentation.findOne({url: url})
@@ -123,14 +122,15 @@ app.get('/fragmentation', (req, res) => {
         })
 })
 
+/**
+ * Add a new fragmentation
+ */
 app.post('/fragmentation', (req, res) => {
     let url = req.body.url;
     let stream_url = req.body.stream;
     let strategy = req.body.strategy;
     let property = req.body.property;
-
     console.log(req.body)
-
     Stream.findOne({url: stream_url})
         .then(stream_result => {
             if (stream_result === null) {
@@ -189,7 +189,7 @@ app.post('/fragmentation', (req, res) => {
 })
 
 /**
- * enable or disable a fragmentation
+ * Enable or disable a fragmentation
  */
 app.post('/fragmentation/enable', (req, res) => {
     const enabled = req.body.enabled
