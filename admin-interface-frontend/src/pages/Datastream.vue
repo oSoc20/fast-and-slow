@@ -63,7 +63,7 @@
           <thead>
             <tr>
               <th>Fragmentation strategy</th>
-              <th>Properties</th>
+              <th>Property</th>
               <th>Endpoint</th>
               <th>Enabled</th>
               <th></th>
@@ -72,7 +72,7 @@
           <tbody>
             <tr v-for="(fragmentation, index) of fragmentations" :key="fragmentation.name">
               <td>{{fragmentation.strategy}}</td>
-              <td>{{fragmentation.properties}}</td>
+              <td>{{fragmentation.property}}</td>
               <td>{{fragmentation.endpoint}}</td>
               <td>
                 <vl-checkbox
@@ -140,7 +140,7 @@ export default {
       this.fragmentations = [];
       fragmentations.forEach(frag => {
         this.fragmentations.push({
-          endpoint: frag.url,
+          endpoint: frag.url[frag.url.length - 1],
           strategy: frag.strategy,
           property: frag.property,
           enabled: frag.enabled
