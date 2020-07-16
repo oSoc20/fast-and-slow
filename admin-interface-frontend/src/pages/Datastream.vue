@@ -81,6 +81,7 @@
                   v-model="fragmentation.enabled"
                   :val="fragmentation.enabled"
                   mod-switch
+                  @input="enableFragmentation(fragmentation.enabled, fragmentation.endpoint)"
                 ></vl-checkbox>
               </td>
               <td>
@@ -147,14 +148,15 @@ export default {
         });
       });
     },
-    enableFragmentation: async function() {
+    enableFragmentation: async function(state, url) {
+      console.log(state, url)
       const response = await fetch(
         "http://localhost:3000/fragmentation/enable",
         {
           method: "post",
           body: JSON.stringify({
-            url: "http://example.com/fragmentations/testconfig",
-            enabled: false
+            url: url,
+            enabled: state
           }),
           headers: {
             "Content-Type": "application/json"
@@ -167,6 +169,7 @@ export default {
           "An error occurred changing the status of the fragmentation"
         );
       }
+      await this.getFragmentations(this.$route.query.eventStreamUrl)
     },
     getAllStreams: async function(url) {
       const response = await fetch("http://localhost:3000/streams");
