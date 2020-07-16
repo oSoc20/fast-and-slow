@@ -9,14 +9,12 @@ const router = new Router({
         {
             path: '/',
             component: () =>
-                import('./pages/Home')
+                import('./components/DatastreamInput')
         },
         {
-            path:'/stream',
-            name: "EventstreamDetails",
-            props: true,
+            path: '/streams/',
             component: () =>
-                import('./pages/Datastream')
+                import('./components/DatastreamPage')
         }
     ]
 });
