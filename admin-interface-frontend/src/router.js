@@ -12,7 +12,7 @@ const router = new Router({
                 import('./pages/Home')
         },
         {
-            path:'/stream',
+            path:'/streams',
             name: "EventstreamDetails",
             props: true,
             component: () =>
