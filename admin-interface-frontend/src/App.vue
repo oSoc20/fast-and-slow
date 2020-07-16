@@ -37,4 +37,5 @@ export default {
     @import "~@govflanders/vl-ui-modal/src/scss/modal";
     @import "~@govflanders/vl-ui-info-tile/src/scss/info-tile";
     @import "~@govflanders/vl-ui-infoblock/src/scss/infoblock";
+    @import "~@govflanders/vl-ui-radio/src/scss/radio";
 </style>

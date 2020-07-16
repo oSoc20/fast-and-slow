@@ -23,6 +23,7 @@
     "@govflanders/vl-ui-link": "^3.11.3",
     "@govflanders/vl-ui-link-list": "^3.11.3",
     "@govflanders/vl-ui-modal": "^3.11.3",
+    "@govflanders/vl-ui-radio": "^3.11.4",
     "@govflanders/vl-ui-titles": "^3.11.3",
     "@govflanders/vl-ui-util": "^3.11.3",
     "@govflanders/vl-ui-vue-components": "^4.0.2",

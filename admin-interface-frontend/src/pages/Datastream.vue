@@ -10,7 +10,7 @@
         </span>
         
       </vl-column>
-      <vl-column width = "10">
+      <vl-column width = "4">
           <vl-dropdown-navigation :label="'Collection: ' + selectedStream">
             <vl-link-list>
               <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
@@ -19,14 +19,23 @@
             </vl-link-list>
           </vl-dropdown-navigation>
       </vl-column>
-      <vl-column width="2">
-          <vl-button
-            v-vl-positioning:float-right
+      <vl-column width="8">
+        <vl-action-group mod-space-between>
+            <vl-button
             icon="file-edit"
             mod-icon-before
             mod-narrow
             v-vl-modal-toggle="'editstream-modal'"
           >Edit</vl-button>
+
+          <vl-button
+          icon="add"
+          mod-icon-before
+          mod-narrow
+          v-vl-modal-toggle="'fragmentation-modal'">
+          New fragmentation</vl-button>
+        </vl-action-group>
+          
       </vl-column>
       <vl-column>
         <vl-data-table mod-line>
@@ -63,15 +72,19 @@
       <vl-column>
         <EditStreamModal></EditStreamModal>
       </vl-column>
+      <vl-column>
+        <FragmentationModal></FragmentationModal>
+      </vl-column>
     </vl-grid>
   </vl-layout>
 </template>
 
 <script>
 import EditStreamModal from "../components/EditStreamModal";
+import FragmentationModal from "../components/FragmentationModal";
 export default {
   name: "Datastream",
-  components: { EditStreamModal },
+  components: { EditStreamModal, FragmentationModal },
   data() {
     var streams =  [
         {
@@ -125,7 +138,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
   span.vl-icon.vl-vi.vl-vi-up-down-arrows{
     justify-content: start !important;
   }
@@ -136,4 +150,5 @@ export default {
   span.Back:hover{
     cursor: pointer;
   }
+
 </style>

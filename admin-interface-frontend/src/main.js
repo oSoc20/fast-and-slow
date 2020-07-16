@@ -28,7 +28,9 @@ import {
   VlModalToggle,
   VlFormMessageAnnotation,
   VlInfoTile,
-  VlEqualHeight
+  VlEqualHeight,
+  VlRadio,
+  VlRadioTile
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -51,6 +53,8 @@ Vue.component('vl-icon', VlIcon);
 Vue.component('vl-modal', VlModal);
 Vue.component('vl-form-message-annotation', VlFormMessageAnnotation);
 Vue.component('vl-info-tile', VlInfoTile);
+Vue.component('vl-radio', VlRadio);
+Vue.component('vl-radio-tile', VlRadioTile);
 
 
 Vue.directive('vl-modal-toggle', VlModalToggle);
