@@ -25,12 +25,12 @@
 
                         <vl-column>
                             <vl-form-message-label>Property</vl-form-message-label>
-                            <vl-radio-tile v-for="(property, index) in properties" :key="property"
+                            <vl-radio-tile v-for="(property, index) in properties" :key="property.text"
                                 v-model="selectedProperty"
                                 :name="'radio-tile-name-property' + index"  
-                                :value="property"
+                                :value="property.value"
                                 :id="'vl-radio-tile-property' + index"
-                                :title="property"
+                                :title="property.text"
                                 >
                             </vl-radio-tile>
                         </vl-column>
@@ -54,13 +54,7 @@
         data () {
             var domainName = "http://localhost:3000/fragmentation/";
             var fragmentationName;
-            var properties = [
-                "wfg4w3gg453h543hga4hngeaa4tghna43wwetwetwetewttb",
-                "Property2",
-                "Property3",
-                "s5e4eri8ikm 654rstzs67yuij8rwetwetwetwettwetewt56y8u",
-                "Property5",
-            ];
+            var properties = [];
             var strategies = [
                 "Strategy1",
                 "Strategy2",
@@ -78,7 +72,42 @@
                 selectedProperty,
                 selectedStrategy
             };
-        }
+        },
+        created() {
+            this.loadProperties(this.$route.query.eventStreamUrl)
+        },
+        methods: {
+            loadProperties: async function(url) {
+                const response = await fetch(
+                    `http://localhost:3000/streams/properties?url=${encodeURIComponent(
+                        url
+                    )}`
+                );
+                const data = await response.json();
+                data.forEach(prop => {
+                    this.properties.push({ text: prop.text, value: prop.value });
+                });
+            },
+            addFragmentation: async function() {
+                const response = await fetch("http://localhost:3000/fragmentation", {
+                    method: "post",
+                    body: JSON.stringify({
+                        url: "testconfig",
+                        stream: "http://base-registries-stream.osoc.be/address?page=1",
+                        strategy: "teststrategy",
+                        property: "testproperty"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
+                if (!data.status === "success") {
+                    console.log("An error occurred when adding the fragmentation");
+                }
+            },
+
+        },
     }
 </script>
 
