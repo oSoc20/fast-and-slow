@@ -1,8 +1,14 @@
 <template>
   <vl-layout>
     <vl-grid mod-stacked>
-      <vl-column>
-        <vl-title tag-name="h1">Fast and Slow</vl-title>
+      <vl-column width="1">
+        <vl-button @click="goBack()" class="Go-Back" mod-secondary mod-narrow>Back</vl-button>
+      </vl-column>
+      <vl-column width="11">
+        <span @click="goBack()" class="Back">
+          <vl-title tag-name="h1">Fast and Slow</vl-title>
+        </span>
+        
       </vl-column>
       <vl-column width = "10">
           <vl-dropdown-navigation :label="'Collection: ' + selectedStream">
@@ -111,13 +117,23 @@ export default {
     },
     changeStream(index){
       this.selectedStream = this.streams[index].name;
+    },
+    goBack(){
+      return this.$router.go(-1);
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   span.vl-icon.vl-vi.vl-vi-up-down-arrows{
     justify-content: start !important;
+  }
+
+  .Go-Back{
+    margin-top: 1.5rem;
+  }
+  span.Back:hover{
+    cursor: pointer;
   }
 </style>
