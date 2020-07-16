@@ -6,8 +6,12 @@
             </vl-column>
 
             <vl-column>
-                <vl-title tag-name="h2">Event streams in progress</vl-title>
+                <vl-infoblock
+                icon="hourglass"
+                title="Event streams in progress">
+            </vl-infoblock>
             </vl-column>
+            
             <!-- TODO: a better key can be used here -->
             <vl-column width="4" v-for="line of inProgress" :key="line.name + line.fragmentation">
                 <vl-info-tile
@@ -18,7 +22,7 @@
 
                         <strong>Is loaded: </strong>
                         <vl-icon v-if="line.loaded" icon="check-circle" mod-large/>
-                        <vl-icon v-else icon="alert-circle" mod-large/>
+                        <vl-icon v-else icon="ban" mod-large/>
                         <br>
                         <strong>Fragmentation: </strong> {{line.fragmentation}}
                 </vl-info-tile>
@@ -26,13 +30,15 @@
 
 
             <vl-column width="10">
-                <vl-title tag-name="h2">
-                    Event stream overview
-                </vl-title>
+                <vl-infoblock
+                icon="compass"
+                title="Event stream overview">
+            </vl-infoblock>
             </vl-column>
             <vl-column width="2">
-                <vl-button v-vl-positioning:float-right v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon-before
-                           mod-narrow>Add new
+                <vl-button v-vl-modal-toggle="'stream-modal'" icon="add" mod-icon-before
+                           mod-narrow class="new_button">
+                           Add new
                 </vl-button>
             </vl-column>
             <vl-column>
@@ -53,7 +59,7 @@
                         <td>{{stream.progress}}</td>
                         <td>
                             <vl-icon v-if="stream.loaded" icon="check-circle" mod-large/>
-                            <vl-icon v-else icon="alert-circle" mod-large/>
+                            <vl-icon v-else icon="ban" mod-large/>
                         </td>
                         <td>
                             <router-link :to="{ name: 'EventstreamDetails', params: {eventStreamUrl:stream.url}}">
@@ -138,4 +144,10 @@
 
 <style lang="scss">
 
+    @media screen and (min-width: 768px){
+        .new_button{
+        margin-top: 4rem;
+        }
+    }
+    
 </style>

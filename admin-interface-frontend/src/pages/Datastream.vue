@@ -8,10 +8,15 @@
         <span @click="goBack()" class="Back">
           <vl-title tag-name="h1">Fast and Slow</vl-title>
         </span>
-        
       </vl-column>
-      <vl-column width = "4">
-          <vl-dropdown-navigation :label="'Collection: ' + selectedStream">
+      <vl-column>
+            <vl-infoblock
+                icon="list-bullets"
+                title="Collections">
+            </vl-infoblock>
+      </vl-column>
+      <vl-column width = "2">
+          <vl-dropdown-navigation :label="selectedStream">
             <vl-link-list>
               <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
                 <vl-link @click="changeStream(index)" mod-block href="#">{{stream.name}}</vl-link>
@@ -19,7 +24,7 @@
             </vl-link-list>
           </vl-dropdown-navigation>
       </vl-column>
-      <vl-column width="8">
+      <vl-column width="10">
         <vl-action-group mod-space-between>
             <vl-button
             icon="file-edit"
