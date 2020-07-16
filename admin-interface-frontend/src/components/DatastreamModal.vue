@@ -60,6 +60,10 @@
                 if (!data.status === 'success') {
                     console.log("An error occurred when adding the data stream")
                 }
+                // Empty the fields
+                newStream.name=""
+                newStream.url=""
+                
                 await this.$emit("getAllStreams")
 
             },
