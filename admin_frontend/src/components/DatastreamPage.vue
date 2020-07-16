@@ -6,7 +6,7 @@
             </b-row>
             <b-row class="justify-content-md-center mb-5">
                 <b-col>
-                    <label><b>Features</b></label>
+                    <label><b>Strategies</b></label>
                     <b-form-radio-group :options="fragmentation_options" required></b-form-radio-group>
                 </b-col>
                 <b-col>
@@ -41,17 +41,64 @@
                 isBusy: false
             }
         },
-        created() {
-            this.loadProperties(this.$route.query.url)
+        async created() {
+            // functions are correct but not waiting for each other
+            await this.loadProperties(this.$route.query.url)
+            await this.addFragmentation()
+            await this.getFragmentations(this.$route.query.url)
+            await this.enableFragmentation();
         },
         methods: {
-            loadProperties: async function(url) {
+            loadProperties: async function (url) {
                 const response = await fetch(`http://localhost:3000/streams/properties?url=${encodeURIComponent(url)}`)
                 const data = await response.json()
-                console.log(data)
+                console.log("properties: ", data)
                 data.forEach(prop => {
                     this.feature_options.push({text: prop.text, value: prop.value})
                 })
+            },
+            getFragmentations: async function (url) {
+                const response = await fetch(`http://localhost:3000/streams/fragmentation?url=${encodeURIComponent(url)}`)
+                const data = await response.json()
+                const fragmentations = data.fragmentations
+                console.log("fragmentations: ", fragmentations)
+                fragmentations.forEach(frag => {
+                    console.log(frag)
+                })
+            },
+            addFragmentation: async function () {
+                const response = await fetch('http://localhost:3000/fragmentation', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        "url": "testconfig",
+                        "stream": "http://base-registries-stream.osoc.be/address?page=1",
+                        "strategy": "teststrategy",
+                        "property": "testproperty"
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const data = await response.json()
+                if (!data.status === 'success') {
+                    console.log("An error occurred when adding the fragmentation")
+                }
+            },
+            enableFragmentation: async function() {
+                const response = await fetch('http://localhost:3000/fragmentation/enable', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        "url": "http://example.com/fragmentations/testconfig",
+                        "enabled": false
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const data = await response.json()
+                if (!data.status === 'success') {
+                    console.log("An error occurred changing the status of the fragmentation")
+                }
             }
         }
     }
