@@ -9,12 +9,12 @@ const router = new Router({
         {
             path: '/',
             component: () =>
-                import('./components/DatastreamInput')
+                import('./pages/Home')
         },
         {
             path: '/streams/',
             component: () =>
-                import('./components/DatastreamPage')
+                import('./pages/Datastream')
         }
     ]
 });
