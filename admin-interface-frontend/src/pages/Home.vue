@@ -2,7 +2,26 @@
     <vl-layout>
         <vl-grid mod-stacked v-vl-equal-height:container>
             <vl-column>
-                <vl-title tag-name="h1">Fast and Slow</vl-title>
+                <!-- <vl-title tag-name="h1">Fast and Slow</vl-title> -->
+                <vl-content-header
+                    mod-large
+                    mod-show-mobile
+                    :background="{
+                        src: 'https://source.unsplash.com/random/660x400',
+                        srcset: 'https://source.unsplash.com/random/1800x500 1x, https://source.unsplash.com/random/3100x1000 2x',
+                        alt: 'Content Header',
+                    }">
+                    <div class="vl-content-header__logo-wrapper">
+                        <vl-content-header-entity
+                        prefix="Vlaanderen"
+                        title="Informatie Vlaanderen"
+                        logo="true"
+                        mod-small/>
+                    </div>
+                    <vl-content-header-title
+                        title="Fast and Slow"
+                        tag-name="h1"/>
+                </vl-content-header>
             </vl-column>
 
             <vl-column>
@@ -74,8 +93,6 @@
             <vl-column>
                 <DatastreamModal/>
             </vl-column>
-
-
         </vl-grid>
     </vl-layout>
 </template>

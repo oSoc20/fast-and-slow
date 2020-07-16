@@ -10,6 +10,7 @@
     "@govflanders/vl-ui-action-group": "^3.11.3",
     "@govflanders/vl-ui-button": "^3.11.3",
     "@govflanders/vl-ui-checkbox": "^3.11.3",
+    "@govflanders/vl-ui-content-header": "^3.11.4",
     "@govflanders/vl-ui-core": "^4.0.3",
     "@govflanders/vl-ui-data-table": "^3.11.3",
     "@govflanders/vl-ui-dropdown-navigation": "^3.11.3",

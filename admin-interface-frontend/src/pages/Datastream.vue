@@ -1,21 +1,51 @@
 <template>
   <vl-layout>
     <vl-grid mod-stacked>
-      <vl-column width="1">
+      <!-- <vl-column width="1">
         <vl-button @click="goBack()" class="Go-Back" mod-secondary mod-narrow>Back</vl-button>
       </vl-column>
       <vl-column width="11">
         <span @click="goBack()" class="Back">
           <vl-title tag-name="h1">Fast and Slow</vl-title>
         </span>
+      </vl-column> -->
+      <vl-column>
+        <vl-content-header
+                    mod-large
+                    mod-show-mobile
+                    :background="{
+                        src: 'https://source.unsplash.com/random/660x400',
+                        srcset: 'https://source.unsplash.com/random/1800x500 1x, https://source.unsplash.com/random/3100x1000 2x',
+                        alt: 'Content Header',
+                    }">
+                    <div class="vl-content-header__logo-wrapper">
+                        <vl-content-header-entity
+                        prefix="Vlaanderen"
+                        title="Informatie Vlaanderen"
+                        logo="true"
+                        mod-small/>
+                    </div>
+                    <div @click="goBack()" class="Back"> 
+                        <vl-content-header-title
+                        title="Fast and Slow"
+                        tag-name="h1"/>
+                    </div>
+                    
+                </vl-content-header>
       </vl-column>
+
+      <vl-column>
+        <vl-button @click="goBack()" class="Go-Back" mod-secondary mod-narrow>Back</vl-button>
+      </vl-column>
+
+
       <vl-column>
             <vl-infoblock
                 icon="list-bullets"
                 title="Collections">
             </vl-infoblock>
       </vl-column>
-      <vl-column width = "2">
+      <vl-column width = "3">
           <vl-dropdown-navigation :label="selectedStream">
             <vl-link-list>
               <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
@@ -24,7 +54,7 @@
             </vl-link-list>
           </vl-dropdown-navigation>
       </vl-column>
-      <vl-column width="10">
+      <vl-column width="9">
         <vl-action-group mod-space-between>
             <vl-button
             icon="file-edit"
@@ -152,7 +182,7 @@ export default {
   .Go-Back{
     margin-top: 1.5rem;
   }
-  span.Back:hover{
+  div.Back:hover{
     cursor: pointer;
   }
 

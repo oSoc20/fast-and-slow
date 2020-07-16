@@ -31,7 +31,10 @@ import {
   VlEqualHeight,
   VlRadio,
   VlRadioTile,
-  VlInfoblock
+  VlInfoblock,
+  VlContentHeader,
+  VlContentHeaderEntity,
+  VlContentHeaderTitle,
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -57,6 +60,9 @@ Vue.component('vl-info-tile', VlInfoTile);
 Vue.component('vl-radio', VlRadio);
 Vue.component('vl-radio-tile', VlRadioTile);
 Vue.component('vl-infoblock', VlInfoblock);
+Vue.component('vl-content-header', VlContentHeader);
+Vue.component('vl-content-header-entity', VlContentHeaderEntity);
+Vue.component('vl-content-header-title', VlContentHeaderTitle);
 
 
 Vue.directive('vl-modal-toggle', VlModalToggle);
