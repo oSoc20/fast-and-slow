@@ -35,6 +35,7 @@ app.get('/streams', (req, res) => {
         })
         .catch(err => {
             console.error(err)
+            res.json({status: 'failure', msg: "Unable to get all data stream"})
         })
 })
 
@@ -66,7 +67,7 @@ app.post('/streams', async function (req, res) {
                             })
                             .catch(err => {
                                 console.error(err)
-                                res.json({status: 'failure'})
+                                res.json({status: 'failure', msg: "Unable to store the updated data stream"})
                             })
                     })
                     .catch(
@@ -77,7 +78,7 @@ app.post('/streams', async function (req, res) {
             }
         })
         .catch(err => {
-            res.json({status: 'failure'})
+            res.json({status: 'failure', msg: "The requested data stream is not present"})
         })
 })
 
@@ -93,6 +94,7 @@ app.get('/streams/properties', (req, res) => {
         })
         .catch(err => {
             console.error(err)
+            res.json({status: 'failure', msg: "The requested data stream is not present"})
         })
 })
 
@@ -147,7 +149,7 @@ app.post('/fragmentation', (req, res) => {
     Stream.findOne({url: stream_url})
         .then(stream_result => {
             if (stream_result === null) {
-                res.json({status: 'failure', msg: 'stream not found'})
+                res.json({status: 'failure', msg: 'The requested data stream is not present'})
             } else {
                 const new_url = DOMAIN + 'fragmentation/' + url
 
@@ -167,7 +169,10 @@ app.post('/fragmentation', (req, res) => {
                                             )
                                             .catch(err => {
                                                     console.error(err)
-                                                    res.json({status: 'failure'})
+                                                    res.json({
+                                                        status: 'failure',
+                                                        msg: "An error occurred when storing the updated fragmentation"
+                                                    })
                                                 }
                                             )
                                     } else {
@@ -186,12 +191,18 @@ app.post('/fragmentation', (req, res) => {
                                                     )
                                                     .catch(err => {
                                                         console.error(err)
-                                                        res.json({status: 'failure'})
+                                                        res.json({
+                                                            status: 'failure',
+                                                            msg: "An error occurred when saving the fragmentation"
+                                                        })
                                                     })
                                             })
                                             .catch(err => {
                                                 console.error(err)
-                                                res.json({status: 'failure'})
+                                                res.json({
+                                                    status: 'failure',
+                                                    msg: "An error occurred when saving the fragmentation"
+                                                })
                                             })
                                     }
                                 })
@@ -216,7 +227,7 @@ app.post('/fragmentation/enable', (req, res) => {
         })
         .catch(err => {
             console.error(err)
-            res.json({status: 'failure', msg: "Fragmentation not found in database"})
+            res.json({status: 'failure', msg: "The requested fragmentation is not present"})
         })
 })
 
