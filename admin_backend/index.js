@@ -105,7 +105,7 @@ app.get('/streams/fragmentation', (req, res) => {
 })
 
 /**
- * Get all the fragmentations in the database
+ * Get a specific fragmentations base on a url
  */
 app.get('/fragmentation', (req, res) => {
     let url = req.body.url;
