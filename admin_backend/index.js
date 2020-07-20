@@ -5,18 +5,27 @@ const mongoose = require('mongoose')
 const Stream = require('./models/Stream')
 const Fragmentation = require('./models/Fragmentation')
 const loadProperties = require('./fetchProperties')
+const dotenv = require('dotenv')
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
+dotenv.config()
 
 //
 const db_url = 'mongodb://localhost/testDB'
 mongoose.connect(db_url)
 
-const DOMAIN = "http://localhost:3000/"
+const DOMAIN = process.env.DOMAIN
+
+/**
+ * Get all the properties of a stream
+ */
+app.get('/domain', (req, res) => {
+    res.json(DOMAIN)
+})
 
 /**
  * Get all the streams with their latest name
@@ -156,7 +165,10 @@ app.post('/fragmentation', (req, res) => {
                 Fragmentation.findOne({url: new_url})
                     .then(check_result => {
                         if (check_result) {
-                            res.json({status: 'warning', msg: 'url is already in use'})
+                            res.json({
+                                status: 'warning',
+                                msg: 'The fragmentation url is already in use'
+                            })
                         } else {
                             Fragmentation.findOne({strategy: strategy, property: property, stream: stream_result._id})
                                 .then(result => {
