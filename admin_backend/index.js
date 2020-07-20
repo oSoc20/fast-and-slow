@@ -27,7 +27,7 @@ app.get('/streams', (req, res) => {
         .then(result => {
             let streams = []
             result.forEach(stream => {
-                const name = stream.name[stream.name.length -1]
+                const name = stream.name[stream.name.length - 1]
                 streams.push({name: name, url: stream.url})
             })
             console.log(streams)
@@ -54,17 +54,26 @@ app.post('/streams', async function (req, res) {
                 res.json({status: 'success'})
             } else {
                 loadProperties(url)
-                    .then( props => {
+                    .then(props => {
                         const stream = new Stream({
                             url: url,
                             name: [name],
                             properties: props
                         })
                         stream.save()
-                            .then((result) => {res.json({status: 'success'})
-                        })
-                            .catch(err => console.error(err))
+                            .then((result) => {
+                                res.json({status: 'success'})
+                            })
+                            .catch(err => {
+                                console.error(err)
+                                res.json({status: 'failure'})
+                            })
                     })
+                    .catch(
+                        err => {
+                            console.error(err)
+                            res.json({status: 'failure', msg: "Unable to connect to data stream"})
+                        })
             }
         })
         .catch(err => {
@@ -93,7 +102,7 @@ app.get('/streams/properties', (req, res) => {
 app.get('/streams/fragmentation', (req, res) => {
     // The stream URL
     const url = req.query.url;
-    Stream.findOne({url : url})
+    Stream.findOne({url: url})
         .populate('fragmentations')
         .then(result => {
             res.json({status: 'success', fragmentations: result.fragmentations})
