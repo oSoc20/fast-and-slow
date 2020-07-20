@@ -35,6 +35,13 @@ import {
   VlContentHeader,
   VlContentHeaderEntity,
   VlContentHeaderTitle,
+  VlDynamicLabel,
+  VlProperties,
+  VlPropertiesList,
+  VlPropertiesLabel,
+  VlPropertiesData,
+  VlInputAddon,
+  VlTooltip
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -63,10 +70,17 @@ Vue.component('vl-infoblock', VlInfoblock);
 Vue.component('vl-content-header', VlContentHeader);
 Vue.component('vl-content-header-entity', VlContentHeaderEntity);
 Vue.component('vl-content-header-title', VlContentHeaderTitle);
+Vue.component('vl-dynamic-label', VlDynamicLabel);
+Vue.component('vl-properties', VlProperties);
+Vue.component('vl-properties-label', VlPropertiesLabel);
+Vue.component('vl-properties-list', VlPropertiesList);
+Vue.component('vl-properties-data', VlPropertiesData);
+Vue.component('vl-input-addon', VlInputAddon);
 
 
 Vue.directive('vl-modal-toggle', VlModalToggle);
 Vue.directive('vl-equal-height', VlEqualHeight);
+Vue.directive('vl-tooltip', VlTooltip);
 
 Vue.use(VlCore);
 Vue.use(VlUtil);

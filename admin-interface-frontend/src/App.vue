@@ -39,4 +39,8 @@ export default {
     @import "~@govflanders/vl-ui-infoblock/src/scss/infoblock";
     @import "~@govflanders/vl-ui-radio/src/scss/radio";
     @import "~@govflanders/vl-ui-content-header/src/scss/content-header";
+    @import "~@govflanders/vl-ui-dynamic-label/src/scss/dynamic-label";
+    @import "~@govflanders/vl-ui-properties/src/scss/properties";
+    @import "~@govflanders/vl-ui-input-addon/src/scss/input-addon";
+    @import "~@govflanders/vl-ui-tooltip/src/scss/tooltip";
 </style>
