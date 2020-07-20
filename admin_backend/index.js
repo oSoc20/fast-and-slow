@@ -116,8 +116,8 @@ app.get('/streams/fragmentation', (req, res) => {
 /**
  * Get a specific fragmentations base on a url
  */
-app.get('/fragmentation', (req, res) => {
-    let url = req.body.url;
+app.get('/fragmentation/:endpoint', (req, res) => {
+    let url = DOMAIN + 'fragmentation/' + req.params.endpoint;
     Fragmentation.findOne({url: url})
         .populate('stream')
         .then(result => {
