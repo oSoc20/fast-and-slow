@@ -16,7 +16,7 @@ app.use(cors())
 const db_url = 'mongodb://localhost/testDB'
 mongoose.connect(db_url)
 
-const DOMAIN = "http://example.com/"
+const DOMAIN = "http://localhost:3000/"
 
 /**
  * Get all the streams with their latest name
@@ -112,9 +112,13 @@ app.get('/fragmentation', (req, res) => {
     Fragmentation.findOne({url: url})
         .populate('stream')
         .then(result => {
-            console.log(result)
-            console.log(result.stream.name)
-            res.json({status: 'success', content: result})
+            if (result.enabled) {
+                console.log(result)
+                console.log(result.stream.name)
+                res.json({status: 'success', content: result})
+            } else {
+                res.json({status: 'failure', msg: "The fragmentation is disabled"})
+            }
         })
         .catch(err => {
             console.error(err)
@@ -136,7 +140,7 @@ app.post('/fragmentation', (req, res) => {
             if (stream_result === null) {
                 res.json({status: 'failure', msg: 'stream not found'})
             } else {
-                const new_url = DOMAIN + 'fragmentations/' + url
+                const new_url = DOMAIN + 'fragmentation/' + url
 
                 Fragmentation.findOne({url: new_url})
                     .then(check_result => {
