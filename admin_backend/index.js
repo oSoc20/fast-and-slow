@@ -5,18 +5,27 @@ const mongoose = require('mongoose')
 const Stream = require('./models/Stream')
 const Fragmentation = require('./models/Fragmentation')
 const loadProperties = require('./fetchProperties')
+const dotenv = require('dotenv')
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
+dotenv.config()
 
 //
 const db_url = 'mongodb://localhost/testDB'
 mongoose.connect(db_url)
 
-const DOMAIN = "http://example.com/"
+const DOMAIN = process.env.DOMAIN
+
+/**
+ * Get all the properties of a stream
+ */
+app.get('/domain', (req, res) => {
+    res.json(DOMAIN)
+})
 
 /**
  * Get all the streams with their latest name
@@ -27,7 +36,7 @@ app.get('/streams', (req, res) => {
         .then(result => {
             let streams = []
             result.forEach(stream => {
-                const name = stream.name[stream.name.length -1]
+                const name = stream.name[stream.name.length - 1]
                 streams.push({name: name, url: stream.url})
             })
             console.log(streams)
@@ -35,6 +44,7 @@ app.get('/streams', (req, res) => {
         })
         .catch(err => {
             console.error(err)
+            res.json({status: 'failure', msg: "Unable to get all data stream"})
         })
 })
 
@@ -50,25 +60,39 @@ app.post('/streams', async function (req, res) {
         .then(result => {
             if (result !== null) {
                 result.name.push(name);
-                result.save()
-                res.json({status: 'success'})
+                result.save().then((result) => {
+                    res.json({status: 'success'})
+                })
+                    .catch(err => {
+                        console.error(err)
+                        res.json({status: 'failure', msg: "Unable to store the updated data stream"})
+                    })
             } else {
                 loadProperties(url)
-                    .then( props => {
+                    .then(props => {
                         const stream = new Stream({
                             url: url,
                             name: [name],
                             properties: props
                         })
                         stream.save()
-                            .then((result) => {res.json({status: 'success'})
-                        })
-                            .catch(err => console.error(err))
+                            .then((result) => {
+                                res.json({status: 'success'})
+                            })
+                            .catch(err => {
+                                console.error(err)
+                                res.json({status: 'failure', msg: "Unable to store the data stream"})
+                            })
                     })
+                    .catch(
+                        err => {
+                            console.error(err)
+                            res.json({status: 'failure', msg: "Unable to connect to data stream"})
+                        })
             }
         })
         .catch(err => {
-            res.json({status: 'failure'})
+            res.json({status: 'failure', msg: "The requested data stream is not present"})
         })
 })
 
@@ -84,6 +108,7 @@ app.get('/streams/properties', (req, res) => {
         })
         .catch(err => {
             console.error(err)
+            res.json({status: 'failure', msg: "The requested data stream is not present"})
         })
 })
 
@@ -93,7 +118,7 @@ app.get('/streams/properties', (req, res) => {
 app.get('/streams/fragmentation', (req, res) => {
     // The stream URL
     const url = req.query.url;
-    Stream.findOne({url : url})
+    Stream.findOne({url: url})
         .populate('fragmentations')
         .then(result => {
             res.json({status: 'success', fragmentations: result.fragmentations})
@@ -107,14 +132,18 @@ app.get('/streams/fragmentation', (req, res) => {
 /**
  * Get a specific fragmentations base on a url
  */
-app.get('/fragmentation', (req, res) => {
-    let url = req.body.url;
+app.get('/fragmentation/:endpoint', (req, res) => {
+    let url = DOMAIN + 'fragmentation/' + req.params.endpoint;
     Fragmentation.findOne({url: url})
         .populate('stream')
         .then(result => {
-            console.log(result)
-            console.log(result.stream.name)
-            res.json({status: 'success', content: result})
+            if (result.enabled) {
+                console.log(result)
+                console.log(result.stream.name)
+                res.json({status: 'success', content: result})
+            } else {
+                res.json({status: 'failure', msg: "The fragmentation is disabled"})
+            }
         })
         .catch(err => {
             console.error(err)
@@ -134,14 +163,17 @@ app.post('/fragmentation', (req, res) => {
     Stream.findOne({url: stream_url})
         .then(stream_result => {
             if (stream_result === null) {
-                res.json({status: 'failure', msg: 'stream not found'})
+                res.json({status: 'failure', msg: 'The requested data stream is not present'})
             } else {
-                const new_url = DOMAIN + 'fragmentations/' + url
+                const new_url = DOMAIN + 'fragmentation/' + url
 
                 Fragmentation.findOne({url: new_url})
                     .then(check_result => {
                         if (check_result) {
-                            res.json({status: 'warning', msg: 'url is already in use'})
+                            res.json({
+                                status: 'warning',
+                                msg: 'The fragmentation url is already in use'
+                            })
                         } else {
                             Fragmentation.findOne({strategy: strategy, property: property, stream: stream_result._id})
                                 .then(result => {
@@ -154,7 +186,10 @@ app.post('/fragmentation', (req, res) => {
                                             )
                                             .catch(err => {
                                                     console.error(err)
-                                                    res.json({status: 'failure'})
+                                                    res.json({
+                                                        status: 'failure',
+                                                        msg: "An error occurred when storing the updated fragmentation"
+                                                    })
                                                 }
                                             )
                                     } else {
@@ -173,12 +208,18 @@ app.post('/fragmentation', (req, res) => {
                                                     )
                                                     .catch(err => {
                                                         console.error(err)
-                                                        res.json({status: 'failure'})
+                                                        res.json({
+                                                            status: 'failure',
+                                                            msg: "An error occurred when saving the fragmentation"
+                                                        })
                                                     })
                                             })
                                             .catch(err => {
                                                 console.error(err)
-                                                res.json({status: 'failure'})
+                                                res.json({
+                                                    status: 'failure',
+                                                    msg: "An error occurred when saving the fragmentation"
+                                                })
                                             })
                                     }
                                 })
@@ -203,7 +244,7 @@ app.post('/fragmentation/enable', (req, res) => {
         })
         .catch(err => {
             console.error(err)
-            res.json({status: 'failure', msg: "Fragmentation not found in database"})
+            res.json({status: 'failure', msg: "The requested fragmentation is not present"})
         })
 })
 

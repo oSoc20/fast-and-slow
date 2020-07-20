@@ -132,7 +132,7 @@ export default {
       this.selectedStream = this.streams[index].name;
     },
     goBack() {
-      return this.$router.go(-1);
+      return this.$router.push('/');
     },
 
     getFragmentations: async function(url) {
