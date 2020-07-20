@@ -60,8 +60,13 @@ app.post('/streams', async function (req, res) {
         .then(result => {
             if (result !== null) {
                 result.name.push(name);
-                result.save()
-                res.json({status: 'success'})
+                result.save().then((result) => {
+                    res.json({status: 'success'})
+                })
+                    .catch(err => {
+                        console.error(err)
+                        res.json({status: 'failure', msg: "Unable to store the updated data stream"})
+                    })
             } else {
                 loadProperties(url)
                     .then(props => {
@@ -76,7 +81,7 @@ app.post('/streams', async function (req, res) {
                             })
                             .catch(err => {
                                 console.error(err)
-                                res.json({status: 'failure', msg: "Unable to store the updated data stream"})
+                                res.json({status: 'failure', msg: "Unable to store the data stream"})
                             })
                     })
                     .catch(
