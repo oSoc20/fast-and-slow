@@ -1,20 +1,15 @@
 <template>
-    <vl-region>
-        <router-view />
-    </vl-region>
+    <router-view/>
 </template>
-
 
 
 <script>
 
-export default {
-    name: 'App',
-    components: {
+    export default {
+        name: 'App',
+        components: {}
     }
-}
 </script>
-
 
 
 <style lang="scss">
