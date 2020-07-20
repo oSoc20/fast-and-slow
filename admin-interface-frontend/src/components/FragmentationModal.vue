@@ -7,6 +7,7 @@
                         <vl-column>
                             <vl-title tag-name="h2">New Fragmentation</vl-title>
                             <vl-form-message-label for="input-field-stream-name">What name do you want to give the Fragmentation?</vl-form-message-label>
+                            <br>
                             <span>{{domainName}}</span>
                             <vl-input-field id="input-field-fragmentation-name" name="input-field-fragmentation-name" v-model="fragmentationName"></vl-input-field>
                         </vl-column>
@@ -52,7 +53,7 @@
     export default {
         name: "FragmentationModal",
         data () {
-            var domainName = "http://localhost:3000/fragmentation/";
+            var domainName = "";
             var fragmentationName;
             var properties = [];
             var strategies = [
@@ -75,8 +76,17 @@
         },
         created() {
             this.loadProperties(this.$route.query.eventStreamUrl)
+            this.loadDomain()
         },
         methods: {
+            loadDomain: async function() {
+                const response = await fetch(
+                    `http://localhost:3000/domain`
+                );
+                const data = await response.json();
+                console.log(data)
+                this.domainName = data
+            },
             loadProperties: async function(url) {
                 const response = await fetch(
                     `http://localhost:3000/streams/properties?url=${encodeURIComponent(
