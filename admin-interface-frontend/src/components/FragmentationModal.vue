@@ -32,7 +32,7 @@
                             <vl-radio-tile v-for="(property, index) in properties" :key="property.text"
                                            v-model="selectedProperty"
                                            :name="'radio-tile-name-property' + index"
-                                           :value="property.value[property.value.length - 1]"
+                                           :value="{uri: property.value[property.value.length - 1], name: property.text}"
                                            :id="'vl-radio-tile-property' + index"
                                            :title="property.text"
                             >
@@ -108,7 +108,8 @@
                     body: JSON.stringify({
                         name: this.fragmentationName,
                         strategy: this.selectedStrategy,
-                        property: encodeURIComponent(this.selectedProperty)
+                        property: encodeURIComponent(this.selectedProperty.uri),
+                        propertyLabel: this.selectedProperty.name
                     }),
                     headers: {
                         "Content-Type": "application/json"

@@ -133,8 +133,8 @@
                     let available = 0
                     let loading = 0
 
-                    console.log(streamData)
                     streamData.forEach(frag => {
+                        console.log(frag)
                         if (frag.status === "LOADING"){
                             loading += 1
                             this.inProgress.push({
@@ -142,7 +142,7 @@
                                 description: "",
                                 loaded: false,
                                 fragmentation: frag.kind,
-                                property: frag.shaclPath[0]
+                                property: frag.params.propertyLabel
 
                             })
                         } else if (data[item].status !== "ENABLED" && frag.status === "DISABLED") {
@@ -152,7 +152,7 @@
                                 description: "",
                                 loaded: false,
                                 fragmentation: frag.kind,
-                                property: frag.shaclPath[0]
+                                property: frag.params.propertyLabel
 
                             })
 

@@ -5,9 +5,16 @@
                 <vl-modal id="editstream-modal">
                     <vl-form-grid>
                         <vl-column>
-                            <vl-form-message-label for="input-field-stream-name">Do you want to rename the event stream?</vl-form-message-label>
-                            <vl-input-field id="input-field-stream-name" name="input-field-stream-name" mod-block></vl-input-field>
-                            <vl-form-message-annotation>This will change the name for every fragmentation. The old URI will still work.</vl-form-message-annotation>
+                            <vl-form-message-label for="input-field-stream-name">Do you want to rename the event
+                                stream?
+                            </vl-form-message-label>
+                            <vl-input-field v-model="newName"
+                                            id="input-field-stream-name"
+                                            name="input-field-stream-name"
+                                            mod-block></vl-input-field>
+                            <vl-form-message-annotation>This will change the name for every fragmentation. The old URI
+                                will still work.
+                            </vl-form-message-annotation>
                         </vl-column>
                         <vl-column width="2">
                             <vl-action-group>
@@ -15,9 +22,10 @@
                             </vl-action-group>
                         </vl-column>
                         <vl-column width="10">
-                                <vl-action-group mod-align-right>
+                            <vl-action-group mod-align-right>
                                 <vl-button mod-secondary v-vl-modal-toggle="'editstream-modal'">Cancel</vl-button>
-                                <vl-button>Save</vl-button>
+                                <vl-button @click="updateStreamName" v-vl-modal-toggle="'editstream-modal'">Save
+                                </vl-button>
                             </vl-action-group>
                         </vl-column>
                     </vl-form-grid>
@@ -29,8 +37,46 @@
 
 <script>
     export default {
-    name: "EditStreamModal"
-}
+        name: "EditStreamModal",
+        data() {
+            var newName = "";
+            return {
+                newName
+            }
+        },
+        methods: {
+            updateStreamName: async function () {
+                const getStream = await fetch(`http://localhost:3000/streams/${this.$route.query.eventStreamName}`)
+                const getStreamData = await getStream.json()
+
+                if (getStreamData) {
+                    const response = await fetch("http://localhost:3000/streams", {
+                        method: "post",
+                        body: JSON.stringify({
+                            name: this.newName,
+                            url: getStreamData.sourceURI
+                        }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    const data = await response.json();
+                    const encodedUrl = "/streams?eventStreamName=" + this.newName
+                    await this.$router.push(encodedUrl)
+                    window.location.reload();
+                } else {
+                    console.log("An error occurred when adding the data stream");
+                }
+
+
+                // Empty the fields
+                this.emptyFields();
+            },
+            emptyFields: function () {
+                this.newName = "";
+            }
+        }
+    }
 </script>
 
 <style scoped>

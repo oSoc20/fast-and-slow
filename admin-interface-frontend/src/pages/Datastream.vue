@@ -104,7 +104,7 @@
                 </vl-data-table>
             </vl-column>
             <vl-column>
-                <EditStreamModal></EditStreamModal>
+                <EditStreamModal @getAllStreams="getAllStreams"></EditStreamModal>
             </vl-column>
             <vl-column>
                 <FragmentationModal @getFragmentations="getFragmentations"></FragmentationModal>
@@ -156,7 +156,7 @@
                         endpoint: "TODO", //frag.url[frag.url.length - 1],
                         strategy: frag.kind,
                         name: frag.name,
-                        property: frag.shaclPath[0], //TODO: get the shacl prperty and not the url
+                        property: frag.params.propertyLabel,
                         enabled: (frag.status === "ENABLED"),
                         loading: frag.status === "LOADING"
                     });
