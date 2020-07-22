@@ -61,11 +61,12 @@
             var fragmentationName;
             var properties = [];
             var strategies = [
-                "Strategy1",
-                "Strategy2",
-                "wa4tgb43ag4nghj,8k8r67kwetwetewtwtwetwetwetsxdgb",
-                "Strategy4",
-                "sey54ery7u5rt4eu8787niewtewtewweewttwtewezsxse34",
+                "PREFIX",
+                "SUFFIX",
+                "NGRAM - minLength: 2, maxLength: 4",
+                "TIME_INTERVAL - interval: 20 min",
+                "XYZ_TILE - minZoom: 13, maxZoom: 15",
+                "IDENTITY"
             ];
             var selectedProperty;
             var selectedStrategy;
@@ -102,23 +103,28 @@
                 });
             },
             addFragmentation: async function () {
-                console.log(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations?
-                    name=${this.fragmentationName}&property=${encodeURIComponent(this.selectedProperty)}&strategy=${this.selectedStrategy}`)
-            //     const response = await fetch(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations?
-            //         name=${this.fragmentationName}&property=${this.selectedProperty}&strategy=${this.selectedStrategy}`, {
-            //         method: "post",
-            //     });
-            //     const data = await response.json();
-            //     console.log(data)
-            //     if (!data.status === "success") {
-            //         console.log("An error occurred when adding the fragmentation");
-            //     } else {
-            //         this.fragmentationName = ""
-            //         this.selectedProperty = ''
-            //         this.selectedStrategy = ''
-            //     }
-            //
-            //     await this.$emit("getFragmentations", this.$route.query.eventStreamUrl)
+                const response = await fetch(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations`, {
+                    method: "post",
+                    body: JSON.stringify({
+                        name: this.fragmentationName,
+                        strategy: this.selectedStrategy,
+                        property: encodeURIComponent(this.selectedProperty)
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
+                console.log(data)
+                if (!data.status === "success") {
+                    console.log("An error occurred when adding the fragmentation");
+                } else {
+                    this.fragmentationName = ""
+                    this.selectedProperty = ''
+                    this.selectedStrategy = ''
+                }
+
+                await this.$emit("getFragmentations", this.$route.query.eventStreamName)
             },
 
         },
