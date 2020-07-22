@@ -32,15 +32,16 @@
             <vl-column>
                 <vl-infoblock icon="list-bullets" title="Collections"></vl-infoblock>
             </vl-column>
-            <vl-column width="3">
-                <vl-dropdown-navigation :label="selectedStream">
-                    <vl-link-list>
-                        <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
-                            <vl-link @click="changeStream(index)" mod-block href="#">{{stream.name}}</vl-link>
-                        </vl-link-list-item>
-                    </vl-link-list>
-                </vl-dropdown-navigation>
-                <vl-button
+            <vl-column width="9">
+                <vl-action-group>
+                    <vl-dropdown-navigation :label="selectedStream">
+                        <vl-link-list>
+                            <vl-link-list-item v-for="(stream, index) in streams" :key="stream.name">
+                                <vl-link @click="changeStream(index)" mod-block href="#">{{stream.name}}</vl-link>
+                            </vl-link-list-item>
+                        </vl-link-list>
+                    </vl-dropdown-navigation>
+                    <vl-button
                             icon="file-edit"
                             mod-icon-before
                             mod-narrow
@@ -48,16 +49,17 @@
                             class="edit-button"
                     >Edit
                     </vl-button>
+                </vl-action-group>
             </vl-column>
-            <vl-column width="9">
-                    <vl-button
-                            icon="add"
-                            mod-icon-before
-                            mod-narrow
-                            v-vl-modal-toggle="'fragmentation-modal'"
-                            v-vl-positioning:float-right
-                    >New fragmentation
-                    </vl-button>
+            <vl-column width="3">
+                <vl-button
+                        icon="add"
+                        mod-icon-before
+                        mod-narrow
+                        v-vl-modal-toggle="'fragmentation-modal'"
+                        v-vl-positioning:float-right
+                >New fragmentation
+                </vl-button>
             </vl-column>
             <vl-column>
                 <vl-data-table mod-line>
@@ -210,14 +212,15 @@
         margin-top: 1.5rem;
     }
 
-.Go-Back {
-  margin-top: 1.5rem;
-}
-div.Back:hover {
-  cursor: pointer;
-}
+    .Go-Back {
+        margin-top: 1.5rem;
+    }
 
-.edit-button{
-  margin-top: -3rem;
-}
+    div.Back:hover {
+        cursor: pointer;
+    }
+
+    .edit-button {
+        margin-top: -3rem;
+    }
 </style>
