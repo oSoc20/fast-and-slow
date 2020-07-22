@@ -105,11 +105,13 @@
         data() {
             return {
                 streams: [],
-                inProgress: []
+                inProgress: [],
+                interval: null
             }
         },
         created() {
             this.getAllStreams()
+            this.interval = setInterval(() => this.getAllStreams(), 1000*15);
         },
         methods: {
             setIcon: async function () {

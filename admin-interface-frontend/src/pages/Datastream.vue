@@ -118,12 +118,16 @@
             return {
                 streams: [],
                 fragmentations: [],
-                selectedStream: ""
+                selectedStream: "",
+                interval: null
+
             }
         },
         created() {
             this.getAllStreams(this.$route.query.eventStreamName);
             this.getFragmentations(this.$route.query.eventStreamName);
+            this.interval = setInterval(() => this.getFragmentations(this.$route.query.eventStreamName), 1000 * 15);
+
         },
         methods: {
             deleteFragmentation(index) {
