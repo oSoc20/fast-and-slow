@@ -156,7 +156,7 @@
 
                             })
 
-                        } else {
+                        } else if (frag.status === "ENABLED") {
                             available += 1
                         }
                     })
