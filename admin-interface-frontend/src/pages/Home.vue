@@ -113,6 +113,9 @@
             this.getAllStreams()
             this.interval = setInterval(() => this.getAllStreams(), 1000*15);
         },
+        beforeDestroy() {
+            clearInterval(this.interval)
+        },
         methods: {
             setIcon: async function () {
                 this.inProgress.forEach(item => {
