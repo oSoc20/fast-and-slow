@@ -162,7 +162,7 @@
                     {
                         method: "post",
                         body: JSON.stringify({
-                            enabled: state
+                            enabled: String(state)
                         }),
                         headers: {
                             "Content-Type": "application/json"
