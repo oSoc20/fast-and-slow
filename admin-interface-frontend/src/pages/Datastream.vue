@@ -76,12 +76,7 @@
             <tr v-for="(fragmentation, index) of fragmentations" :key="fragmentation.name">
               <td>{{fragmentation.strategy}}</td>
               <td>{{fragmentation.property}}</td>
-              <td>
-                <vl-input-group>
-                  <vl-input-field :ref="index" :disabled = "true" :id="'fragmentation-name-input-field-'+index" name="fragmentation-name-input-field"/>
-                  <vl-input-addon @click="toggleInput(index)" tag-name="button" type="button" icon="pencil" tooltip="change fragmentation name" text="change fragmentation name" />
-                </vl-input-group>         
-              </td>
+              <td>{{fragmentation.name}}</td>
               <td>
                 <vl-checkbox
                   :id="'checkbox-' + fragmentation"
