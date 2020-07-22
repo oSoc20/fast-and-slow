@@ -17,6 +17,7 @@
     "@govflanders/vl-ui-dynamic-label": "^3.11.4",
     "@govflanders/vl-ui-equal-height": "^3.11.4",
     "@govflanders/vl-ui-form-message": "^3.11.3",
+    "@govflanders/vl-ui-form-validation": "^4.0.5",
     "@govflanders/vl-ui-icon": "^3.11.3",
     "@govflanders/vl-ui-info-tile": "^3.11.4",
     "@govflanders/vl-ui-infoblock": "^3.11.4",

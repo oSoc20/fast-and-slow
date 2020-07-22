@@ -41,7 +41,10 @@ import {
   VlPropertiesLabel,
   VlPropertiesData,
   VlInputAddon,
-  VlTooltip
+  VlTooltip,
+  VlFormValidation,
+  VlFormMessageError,
+  VlFormValidationObserver
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -76,6 +79,9 @@ Vue.component('vl-properties-label', VlPropertiesLabel);
 Vue.component('vl-properties-list', VlPropertiesList);
 Vue.component('vl-properties-data', VlPropertiesData);
 Vue.component('vl-input-addon', VlInputAddon);
+Vue.component('vl-form-validation', VlFormValidation);
+Vue.component('vl-form-message-error', VlFormMessageError);
+Vue.component('vl-form-validation-observer', VlFormValidationObserver);
 
 
 Vue.directive('vl-modal-toggle', VlModalToggle);
