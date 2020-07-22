@@ -145,8 +145,9 @@
                 console.log(data)
                 this.fragmentations = [];
                 data.forEach(frag => {
+                    let endpoint = `http://domain.com/data/stream/${name}/fragmentations/${frag.name}`.replace(' ', '_').toLowerCase()
                     this.fragmentations.push({
-                        endpoint: `http://domain.com/data/stream/${name}/fragmentations/${frag.name}`,
+                        endpoint: endpoint,
                         strategy: frag.kind,
                         name: frag.name,
                         property: frag.params.propertyLabel,
