@@ -76,14 +76,7 @@
                         <td>{{fragmentation.strategy}}</td>
                         <td>{{fragmentation.property}}</td>
                         <td>
-                            <vl-input-group>
-                                <vl-input-field :ref="index" :disabled="true"
-                                                :id="'fragmentation-name-input-field-'+index"
-                                                name="fragmentation-name-input-field"/>
-                                <vl-input-addon @click="toggleInput(index)" tag-name="button" type="button"
-                                                icon="pencil" tooltip="change fragmentation name"
-                                                text="change fragmentation name"/>
-                            </vl-input-group>
+                            {{fragmentation.endpoint}}
                         </td>
                         <td v-if="!fragmentation.loading">
                             <vl-checkbox
@@ -153,7 +146,7 @@
                 this.fragmentations = [];
                 data.forEach(frag => {
                     this.fragmentations.push({
-                        endpoint: "TODO", //frag.url[frag.url.length - 1],
+                        endpoint: `http://domain.com/data/stream/${name}/fragmentations/${frag.name}`,
                         strategy: frag.kind,
                         name: frag.name,
                         property: frag.params.propertyLabel,
