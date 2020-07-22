@@ -6,7 +6,6 @@
           <vl-form-grid>
             <vl-column>
               <vl-form-validation-observer slim v-slot="{ handleSubmit, errors, invalid}">
-                <form @submit.prevent="handleSubmit(submitStream)">
                   <vl-column>
                     <vl-title tag-name="h2">Event stream</vl-title>
                     <vl-form-message-label for="input-field-stream-name">
@@ -54,10 +53,10 @@
                   <vl-column>
                     <vl-action-group mod-align-right>
                       <vl-button @click="emptyFields" mod-secondary v-vl-modal-toggle="'stream-modal'">Cancel</vl-button>
-                      <vl-button>Add</vl-button>
+                      <vl-button v-if="invalid">fouten</vl-button>
+                      <vl-button v-if="!invalid" @click="submitStream" v-vl-modal-toggle="'stream-modal'">Add</vl-button>
                     </vl-action-group>
                   </vl-column>
-                </form>
               </vl-form-validation-observer>
             </vl-column>
           </vl-form-grid>
@@ -102,12 +101,12 @@ export default {
       await this.$emit("getAllStreams");
       // Empty the fields
       this.emptyFields();
-      window.location.reload();
+      //window.location.reload();
     },
     emptyFields: function(){
         this.newStream.name = "";
         this.newStream.url = "";
-    }
+    },
   }
 };
 </script>
