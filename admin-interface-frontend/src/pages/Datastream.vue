@@ -215,6 +215,6 @@ div.Back:hover {
 }
 
 .edit-button{
-  margin-top: -2rem;
+  margin-top: -3rem;
 }
 </style>

@@ -53,8 +53,10 @@
                   <vl-column>
                     <vl-action-group mod-align-right>
                       <vl-button @click="emptyFields" mod-secondary v-vl-modal-toggle="'stream-modal'">Cancel</vl-button>
-                      <vl-button v-if="invalid">fouten</vl-button>
-                      <vl-button v-if="!invalid" @click="submitStream" v-vl-modal-toggle="'stream-modal'">Add</vl-button>
+                      <template>
+                        <vl-button v-if="invalid" mod-disabled v-vl-modal-toggle="'stream-modal'">Add</vl-button>
+                        <vl-button v-else @click="submitStream" v-vl-modal-toggle="'stream-modal'">Add</vl-button>
+                      </template>
                     </vl-action-group>
                   </vl-column>
               </vl-form-validation-observer>

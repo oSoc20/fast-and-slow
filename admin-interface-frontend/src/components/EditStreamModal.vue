@@ -6,7 +6,7 @@
                     <vl-form-grid>
                         <vl-column>
                             <vl-form-message-label for="input-field-stream-name">Do you want to rename the event stream?</vl-form-message-label>
-                            <vl-input-field id="input-field-stream-name" name="input-field-stream-name" mod-block></vl-input-field>
+                            <vl-input-field v-model="newStreamName" id="input-field-stream-name" name="input-field-stream-name" mod-block></vl-input-field>
                             <vl-form-message-annotation>This will change the name for every fragmentation. The old URI will still work.</vl-form-message-annotation>
                         </vl-column>
                         <vl-column width="2">
@@ -16,7 +16,7 @@
                         </vl-column>
                         <vl-column width="10">
                                 <vl-action-group mod-align-right>
-                                <vl-button mod-secondary v-vl-modal-toggle="'editstream-modal'">Cancel</vl-button>
+                                <vl-button @click="emptyFields" mod-secondary v-vl-modal-toggle="'editstream-modal'">Cancel</vl-button>
                                 <vl-button>Save</vl-button>
                             </vl-action-group>
                         </vl-column>
@@ -29,7 +29,18 @@
 
 <script>
     export default {
-    name: "EditStreamModal"
+    name: "EditStreamModal",
+    data(){
+        var newStreamName = "";
+        return {
+            newStreamName
+        }
+    },
+    methods:{
+        emptyFields: function(){
+            this.newStreamName = "";
+        }
+    }
 }
 </script>
 
