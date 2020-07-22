@@ -32,7 +32,7 @@
                             <vl-radio-tile v-for="(property, index) in properties" :key="property.text"
                                            v-model="selectedProperty"
                                            :name="'radio-tile-name-property' + index"
-                                           :value="property.text"
+                                           :value="property.value[property.value.length - 1]"
                                            :id="'vl-radio-tile-property' + index"
                                            :title="property.text"
                             >
@@ -102,28 +102,23 @@
                 });
             },
             addFragmentation: async function () {
-                const response = await fetch("http://localhost:3000/fragmentation", {
-                    method: "post",
-                    body: JSON.stringify({
-                        url: this.fragmentationName,
-                        stream: this.$route.query.eventStreamUrl,
-                        strategy: this.selectedStrategy,
-                        property: this.selectedProperty
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await response.json();
-                if (!data.status === "success") {
-                    console.log("An error occurred when adding the fragmentation");
-                } else {
-                    this.fragmentationName = ""
-                    this.selectedProperty = ''
-                    this.selectedStrategy = ''
-                }
-
-                await this.$emit("getFragmentations", this.$route.query.eventStreamUrl)
+                console.log(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations?
+                    name=${this.fragmentationName}&property=${encodeURIComponent(this.selectedProperty)}&strategy=${this.selectedStrategy}`)
+            //     const response = await fetch(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations?
+            //         name=${this.fragmentationName}&property=${this.selectedProperty}&strategy=${this.selectedStrategy}`, {
+            //         method: "post",
+            //     });
+            //     const data = await response.json();
+            //     console.log(data)
+            //     if (!data.status === "success") {
+            //         console.log("An error occurred when adding the fragmentation");
+            //     } else {
+            //         this.fragmentationName = ""
+            //         this.selectedProperty = ''
+            //         this.selectedStrategy = ''
+            //     }
+            //
+            //     await this.$emit("getFragmentations", this.$route.query.eventStreamUrl)
             },
 
         },

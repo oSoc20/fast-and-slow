@@ -186,7 +186,6 @@ export default {
           url: data[item].sourceURI
         }
         this.streams.push(add_stream);
-        this.selectedStream = ""
         if (add_stream.name === name) {
           this.selectedStream = add_stream.name
         }
