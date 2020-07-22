@@ -24,6 +24,19 @@
                 </vl-content-header>
             </vl-column>
 
+            <template v-if="errorHasOccured">
+                <vl-column>
+                    <vl-alert
+                        icon='warning'
+                        close-text='close warning'
+                        :title='errorMessage'
+                        mod-naked
+                        mod-error>
+                        An error has occured while handling your request, please verify!
+                    </vl-alert>
+                </vl-column>
+            </template>
+
             <vl-column>
                 <vl-infoblock
                         icon="hourglass"
@@ -105,7 +118,9 @@
         data() {
             return {
                 streams: [],
-                inProgress: []
+                inProgress: [],
+                errorHasOccured: false,
+                errorMessage: ""
             }
         },
         created() {
@@ -122,6 +137,7 @@
                 })
             },
             getAllStreams: async function () {
+                this.errorHasOccured = false;
                 const response = await fetch('http://localhost:3000/streams')
                 const data = await response.json()
 
@@ -135,7 +151,11 @@
 
                     streamData.forEach(frag => {
                         console.log(frag)
-                        if (frag.status === "LOADING"){
+                        if(frag.status ==="failure"){
+                            this.errorHasOccured = true;
+                            this.errorMessage = frag.message;
+                        }
+                        else if (frag.status === "LOADING"){
                             loading += 1
                             this.inProgress.push({
                                 name: frag.name,

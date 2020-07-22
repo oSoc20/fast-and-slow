@@ -38,4 +38,5 @@
     @import "~@govflanders/vl-ui-properties/src/scss/properties";
     @import "~@govflanders/vl-ui-input-addon/src/scss/input-addon";
     @import "~@govflanders/vl-ui-tooltip/src/scss/tooltip";
+    @import "~@govflanders/vl-ui-alert/src/scss/alert";
 </style>

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@govflanders/vl-ui-action-group": "^3.11.3",
+    "@govflanders/vl-ui-alert": "^3.11.4",
     "@govflanders/vl-ui-button": "^3.11.3",
     "@govflanders/vl-ui-checkbox": "^3.11.3",
     "@govflanders/vl-ui-content-header": "^3.11.4",

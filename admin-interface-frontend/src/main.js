@@ -44,7 +44,8 @@ import {
   VlTooltip,
   VlFormValidation,
   VlFormMessageError,
-  VlFormValidationObserver
+  VlFormValidationObserver,
+  VlAlert
 } from'@govflanders/vl-ui-vue-components';
 
 Vue.component('vl-grid', VlGrid);
@@ -82,6 +83,7 @@ Vue.component('vl-input-addon', VlInputAddon);
 Vue.component('vl-form-validation', VlFormValidation);
 Vue.component('vl-form-message-error', VlFormMessageError);
 Vue.component('vl-form-validation-observer', VlFormValidationObserver);
+Vue.component('vl-alert', VlAlert);
 
 
 Vue.directive('vl-modal-toggle', VlModalToggle);
