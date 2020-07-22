@@ -44,6 +44,8 @@
                     <vl-icon v-else icon="ban" mod-large/>
                     <br>
                     <strong>Fragmentation: </strong> {{line.fragmentation}}
+                    <br>
+                    <strong>Property: </strong> {{line.property}}
                 </vl-info-tile>
             </vl-column>
 
@@ -81,7 +83,7 @@
                             <vl-icon v-else icon="ban" mod-large/>
                         </td>
                         <td>
-                            <vl-button @click="viewDetails(stream.url)" mod-narrow> View details</vl-button>
+                            <vl-button @click="viewDetails(stream.name)" mod-narrow> View details</vl-button>
                         </td>
                     </tr>
                     </tbody>
@@ -103,28 +105,7 @@
         data() {
             return {
                 streams: [],
-                inProgress: [
-                    {
-                        name: "Address",
-                        description: "This event stream contains all the base registers of Flanders",
-                        loaded: true,
-                        fragmentation: "Time",
-
-                    },
-                    {
-                        name: "SensorObservations",
-                        description: "This event streams contains air quality data",
-                        loaded: false,
-                        fragmentation: "Geospatial",
-
-                    },
-                    {
-                        name: "Address",
-                        description: "This event stream contains all the base registers of Flanders",
-                        loaded: true,
-                        fragmentation: "Text",
-                    }
-                ]
+                inProgress: []
             }
         },
         created() {
@@ -145,19 +126,53 @@
                 const data = await response.json()
 
                 this.streams = []
+                this.inProgress = []
                 for (const item in data) {
+                    const streamResponse = await fetch(`http://localhost:3000/streams/${data[item].name}/fragmentations`)
+                    const streamData = await streamResponse.json()
+                    let available = 0
+                    let loading = 0
+
+                    streamData.forEach(frag => {
+                        console.log(frag)
+                        if (frag.status === "LOADING"){
+                            loading += 1
+                            this.inProgress.push({
+                                name: frag.name,
+                                description: "",
+                                loaded: false,
+                                fragmentation: frag.kind,
+                                property: frag.params.propertyLabel
+
+                            })
+                        } else if (data[item].status !== "ENABLED" && frag.status === "DISABLED") {
+                            loading += 1
+                            this.inProgress.push({
+                                name: frag.name,
+                                description: "",
+                                loaded: false,
+                                fragmentation: frag.kind,
+                                property: frag.params.propertyLabel
+
+                            })
+
+                        } else if (frag.status === "ENABLED") {
+                            available += 1
+                        }
+                    })
                     this.streams.push({
                         name: data[item].name,
-                        url: data[item].url,
-                        online: 10,
-                        progress: 10,
-                        loaded: true,
+                        url: data[item].sourceURI,
+                        online: available,
+                        progress: loading,
+                        loaded: (data[item].status === "ENABLED"),
                     })
+
                 }
                 await this.setIcon()
             },
-            viewDetails: function (url) {
-                const encodedUrl = "/streams?eventStreamUrl=" + encodeURIComponent(url)
+            viewDetails: function (name) {
+                const encodedUrl = "/streams?eventStreamName=" + name
                 this.$router.push(encodedUrl)
             }
         }
