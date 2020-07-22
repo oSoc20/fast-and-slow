@@ -77,7 +77,7 @@
                 <vl-input-group>
                   <vl-input-field :ref="index" :disabled = "true" :id="'fragmentation-name-input-field-'+index" name="fragmentation-name-input-field"/>
                   <vl-input-addon @click="toggleInput(index)" tag-name="button" type="button" icon="pencil" tooltip="change fragmentation name" text="change fragmentation name" />
-                </vl-input-group>         
+                </vl-input-group>
               </td>
               <td>
                 <vl-checkbox
@@ -121,8 +121,8 @@ export default {
     }
   },
   created() {
-    this.getAllStreams(this.$route.query.eventStreamUrl);
-    this.getFragmentations(this.$route.query.eventStreamUrl);
+    this.getAllStreams(this.$route.query.eventStreamName);
+    this.getFragmentations(this.$route.query.eventStreamName);
   },
   methods: {
     deleteFragmentation(index) {
@@ -130,21 +130,20 @@ export default {
     },
     changeStream(index) {
       this.selectedStream = this.streams[index].name;
+      const encodedUrl = "/streams?eventStreamName=" + this.streams[index].name
+      this.$router.push(encodedUrl)
     },
     goBack() {
       return this.$router.push('/');
     },
 
-    getFragmentations: async function(url) {
+    getFragmentations: async function(name) {
       const response = await fetch(
-        `http://localhost:3000/streams/fragmentation?url=${encodeURIComponent(
-          url
-        )}`
+        `http://localhost:3000/streams/${name}/fragmentations`
       );
       const data = await response.json();
-      const fragmentations = data.fragmentations;
       this.fragmentations = [];
-      fragmentations.forEach(frag => {
+      data.forEach(frag => {
         this.fragmentations.push({
           endpoint: frag.url[frag.url.length - 1],
           strategy: frag.strategy,
@@ -174,9 +173,9 @@ export default {
           "An error occurred changing the status of the fragmentation"
         );
       }
-      await this.getFragmentations(this.$route.query.eventStreamUrl)
+      await this.getFragmentations(this.$route.query.eventStreamName)
     },
-    getAllStreams: async function(url) {
+    getAllStreams: async function(name) {
       const response = await fetch("http://localhost:3000/streams");
       const data = await response.json();
 
@@ -184,11 +183,12 @@ export default {
       for (const item in data) {
         let add_stream = {
           name: data[item].name,
-          url: data[item].url
+          url: data[item].sourceURI
         }
         this.streams.push(add_stream);
-        if (add_stream.url === url) {
-          this.selectedStream = this.streams[0].name
+        this.selectedStream = ""
+        if (add_stream.name === name) {
+          this.selectedStream = add_stream.name
         }
       }
     },

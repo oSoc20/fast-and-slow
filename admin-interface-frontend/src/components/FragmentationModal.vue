@@ -79,7 +79,7 @@
             };
         },
         created() {
-            this.loadProperties(this.$route.query.eventStreamUrl)
+            this.loadProperties(this.$route.query.eventStreamName)
             this.loadDomain()
         },
         methods: {
@@ -91,14 +91,13 @@
                 console.log(data)
                 this.domainName = data
             },
-            loadProperties: async function (url) {
+            loadProperties: async function (name) {
                 const response = await fetch(
-                    `http://localhost:3000/streams/properties?url=${encodeURIComponent(
-                        url
-                    )}`
+                    `http://localhost:3000/streams/${name}`
                 );
                 const data = await response.json();
-                data.forEach(prop => {
+                console.log(data)
+                data.properties.forEach(prop => {
                     this.properties.push({text: prop.text, value: prop.value});
                 });
             },

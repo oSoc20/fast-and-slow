@@ -81,7 +81,7 @@
                             <vl-icon v-else icon="ban" mod-large/>
                         </td>
                         <td>
-                            <vl-button @click="viewDetails(stream.url)" mod-narrow> View details</vl-button>
+                            <vl-button @click="viewDetails(stream.name)" mod-narrow> View details</vl-button>
                         </td>
                     </tr>
                     </tbody>
@@ -148,7 +148,7 @@
                 for (const item in data) {
                     this.streams.push({
                         name: data[item].name,
-                        url: data[item].url,
+                        url: data[item].sourceURI,
                         online: 10,
                         progress: 10,
                         loaded: true,
@@ -156,8 +156,8 @@
                 }
                 await this.setIcon()
             },
-            viewDetails: function (url) {
-                const encodedUrl = "/streams?eventStreamUrl=" + encodeURIComponent(url)
+            viewDetails: function (name) {
+                const encodedUrl = "/streams?eventStreamName=" + name
                 this.$router.push(encodedUrl)
             }
         }
