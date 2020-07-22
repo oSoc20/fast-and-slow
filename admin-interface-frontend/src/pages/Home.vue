@@ -27,7 +27,7 @@
             <vl-column>
                 <vl-infoblock
                         icon="hourglass"
-                        title="Event streams in progress">
+                        title="Fragmentations in progress">
                 </vl-infoblock>
             </vl-column>
 

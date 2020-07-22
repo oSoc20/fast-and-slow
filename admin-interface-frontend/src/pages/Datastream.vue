@@ -40,9 +40,7 @@
                         </vl-link-list-item>
                     </vl-link-list>
                 </vl-dropdown-navigation>
-            </vl-column>
-            <vl-column width="9">
-                    <vl-button
+                <vl-button
                             icon="file-edit"
                             mod-icon-before
                             mod-narrow
@@ -50,13 +48,14 @@
                             class="edit-button"
                     >Edit
                     </vl-button>
-
+            </vl-column>
+            <vl-column width="9">
                     <vl-button
                             icon="add"
                             mod-icon-before
                             mod-narrow
                             v-vl-modal-toggle="'fragmentation-modal'"
-                            v-vl-positioning=float-right
+                            v-vl-positioning:float-right
                     >New fragmentation
                     </vl-button>
             </vl-column>
