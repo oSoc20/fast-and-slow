@@ -38,13 +38,13 @@
                     <vl-form-message-error v-if="errors">{{ errors[0] }}</vl-form-message-error>
                     <vl-radio-tile
                     v-for="(strategy, index) in strategies"
-                    :key="strategy"
+                    :key="strategy.text"
                     :class="classes"
                     v-model="selectedStrategy"
                     :name="'radio-tile-name-strategy' + index"
-                    :value="strategy"
+                    :value="strategy.value"
                     :id="'vl-radio-tile-strategy' + index"
-                    :title="strategy"
+                    :title="strategy.text"
                     ></vl-radio-tile>
                 </vl-form-validation>
               </vl-column>
@@ -99,12 +99,12 @@
             var fragmentationName;
             var properties = [];
             var strategies = [
-                "PREFIX",
-                "SUFFIX",
-                "NGRAM - minLength: 2, maxLength: 4",
-                "TIME_INTERVAL - interval: 20 min",
-                "XYZ_TILE - minZoom: 13, maxZoom: 15",
-                "IDENTITY"
+              {text: "PREFIX", value: "PREFIX"},
+              {text: "SUFFIX", value: "SUFFIX"},
+              {text: "NGRAM - minLength: 2, maxLength: 4", value: "NGRAM"},
+              {text: "TIME_INTERVAL - interval: 20 min", value: "TIME_INTERVAL"},
+              {text: "XYZ_TILE", value: "XYZ_TILE"},
+              {text: "IDENTITY", value: "IDENTITY"},
             ];
             var selectedProperty;
             var selectedStrategy;
