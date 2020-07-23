@@ -30,6 +30,21 @@
             </vl-column>
 
             <vl-column>
+                <template v-if="errorHasOccured">
+                    <vl-column>
+                        <vl-alert
+                            icon='warning'
+                            close-text='close warning'
+                            :title='errorMessage'
+                            mod-naked
+                            mod-error>
+                            An error has occured while handling your request, please verify!
+                        </vl-alert>
+                    </vl-column>
+                </template>
+            </vl-column>
+
+            <vl-column>
                 <vl-infoblock icon="list-bullets" title="Collections"></vl-infoblock>
             </vl-column>
             <vl-column width="9">
@@ -118,7 +133,9 @@
             return {
                 streams: [],
                 fragmentations: [],
-                selectedStream: ""
+                selectedStream: "",
+                errorHasOccured: false,
+                errorMessage: ""
             }
         },
         created() {
@@ -146,6 +163,13 @@
                 console.log(data)
                 this.fragmentations = [];
                 data.forEach(frag => {
+
+                    if(frag.status ==="failure"){
+                            this.errorHasOccured = true;
+                            this.errorMessage = frag.message;
+                            break;
+                        }
+
                     let endpoint = `http://domain.com/data/stream/${name}/fragmentations/${frag.name}`.replace(' ', '_').toLowerCase()
                     this.fragmentations.push({
                         endpoint: endpoint,
@@ -183,9 +207,15 @@
             getAllStreams: async function (name) {
                 const response = await fetch("http://localhost:3000/streams");
                 const data = await response.json();
-
                 this.streams = [];
                 for (const item in data) {
+                    
+                    if(data[item].status === "failure"){
+                        this.errorHasOccured = true;
+                        this.errorMessage = data[item].message;
+                        break;
+                    }
+
                     let add_stream = {
                         name: data[item].name,
                         url: data[item].sourceURI
