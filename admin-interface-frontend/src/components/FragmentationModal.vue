@@ -12,7 +12,7 @@
                   Fragmentation?
                 </vl-form-message-label>
                 <br />
-                <span>{{domainName}}</span>
+                <span>{{domainName}}/</span>
                 <vl-form-validation
                   rules="required"
                   name="fragmentation name"
@@ -117,19 +117,11 @@
                 selectedStrategy
             };
         },
-        created() {
+        mounted() {
             this.loadProperties(this.$route.query.eventStreamName)
-            this.loadDomain()
+            this.domainName = process.env.VUE_APP_BACKEND_DOMAIN
         },
         methods: {
-            loadDomain: async function () {
-                const response = await fetch(
-                    `http://localhost:3000/domain`
-                );
-                const data = await response.json();
-                console.log(data)
-                this.domainName = data
-            },
             loadProperties: async function (name) {
                 const response = await fetch(
                     `http://localhost:3000/streams/${name}`

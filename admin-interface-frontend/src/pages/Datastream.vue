@@ -62,6 +62,9 @@
                 </vl-button>
             </vl-column>
             <vl-column>
+                <strong>Datastream:</strong> <vl-link :href="this.streamURL" target="_blank">{{decodeURI(this.streamURL)}}</vl-link>
+            </vl-column>
+            <vl-column>
                 <vl-data-table mod-line>
                     <thead>
                     <tr>
@@ -77,7 +80,7 @@
                         <td>{{fragmentation.strategy}}</td>
                         <td>{{fragmentation.property}}</td>
                         <td>
-                            {{fragmentation.endpoint}}
+                            <vl-link :href="fragmentation.endpoint" target="_blank">{{decodeURI(fragmentation.endpoint)}}</vl-link>
                         </td>
                         <td v-if="!fragmentation.loading">
                             <vl-checkbox
@@ -119,11 +122,13 @@
                 streams: [],
                 fragmentations: [],
                 selectedStream: "",
-                fragInterval: null
+                fragInterval: null,
+                streamURL: ""
 
             }
         },
         created() {
+            this.streamURL = encodeURI(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${this.$route.query.eventStreamName}`)
             this.getAllStreams(decodeURIComponent(this.$route.query.eventStreamName));
             this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName));
             this.fragInterval = setInterval(() => this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName)), 1000 * 15);
@@ -138,7 +143,7 @@
             },
             changeStream(index) {
                 this.selectedStream = this.streams[index].name;
-                const encodedUrl = "/streams?eventStreamName=" + encodeURIComponent(this.streams[index].name)
+                const encodedUrl = "/streams?eventStreamName=" + this.streams[index].name
                 this.$router.push(encodedUrl)
             },
             goBack() {
@@ -153,7 +158,7 @@
                 console.log(data)
                 this.fragmentations = [];
                 data.forEach(frag => {
-                    let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/stream/${encodeURIComponent(name)}/fragmentations/${encodeURIComponent(frag.name)}`.replace(' ', '_').toLowerCase()
+                    let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/stream/${encodeURIComponent(name)}/fragmentations/${encodeURIComponent(frag.name)}`
                     this.fragmentations.push({
                         endpoint: endpoint,
                         strategy: frag.kind,
