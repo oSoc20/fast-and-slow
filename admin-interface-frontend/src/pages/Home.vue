@@ -127,14 +127,15 @@
                 })
             },
             getAllStreams: async function () {
-                const response = await fetch('http://localhost:3000/streams')
+                console.log(process.env.VUE_APP_BACKEND_DOMAIN)
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`)
                 const data = await response.json()
                 let loaded_streams = []
                 let loaded_inProgress = []
 
 
                 for (const item in data) {
-                    const streamResponse = await fetch(`http://localhost:3000/streams/${data[item].name}/fragmentations`)
+                    const streamResponse = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${data[item].name}/fragmentations`)
                     const streamData = await streamResponse.json()
                     let available = 0
                     let loading = 0

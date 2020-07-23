@@ -147,13 +147,13 @@
 
             getFragmentations: async function (name) {
                 const response = await fetch(
-                    `http://localhost:3000/streams/${name}/fragmentations`
+                    `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${name}/fragmentations`
                 );
                 const data = await response.json();
                 console.log(data)
                 this.fragmentations = [];
                 data.forEach(frag => {
-                    let endpoint = `http://domain.com/data/stream/${name}/fragmentations/${frag.name}`.replace(' ', '_').toLowerCase()
+                    let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/stream/${name}/fragmentations/${frag.name}`.replace(' ', '_').toLowerCase()
                     this.fragmentations.push({
                         endpoint: endpoint,
                         strategy: frag.kind,
@@ -167,7 +167,7 @@
             enableFragmentation: async function (state, fragName) {
                 console.log(state, fragName)
                 const response = await fetch(
-                    `http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations/${fragName}/enable`,
+                    `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${this.$route.query.eventStreamName}/fragmentations/${fragName}/enable`,
                     {
                         method: "post",
                         body: JSON.stringify({
@@ -188,7 +188,7 @@
                 await this.getFragmentations(this.$route.query.eventStreamName)
             },
             getAllStreams: async function (name) {
-                const response = await fetch("http://localhost:3000/streams");
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`);
                 const data = await response.json();
 
                 this.streams = [];
