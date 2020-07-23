@@ -9,7 +9,7 @@
                                 Do you really want to remove the event stream?
                             </vl-form-message-label>
                         </vl-column>
-                        
+
                         <vl-column>
                             <vl-action-group mod-align-right>
                                 <vl-button v-vl-modal-toggle="'confirm-modal'">No</vl-button>
@@ -24,17 +24,12 @@
 </template>
 
 <script>
-    export default {
-        name: "ConfirmModal",
-        data() {
-            return {
-
-            }
-        },
-        methods: {
-           
-        }
+export default {
+    name: "ConfirmModal",
+    methods: {
+        //TODO: send remove to backend and go to home page
     }
+};
 </script>
 
 <style scoped>

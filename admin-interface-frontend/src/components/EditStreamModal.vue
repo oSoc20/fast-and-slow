@@ -59,9 +59,6 @@
               </vl-column>
             </vl-form-validation-observer>
 
-            <vl-column>
-                <ConfirmModal></ConfirmModal>
-            </vl-column>
           </vl-form-grid>
         </vl-modal>
       </vl-column>
@@ -70,9 +67,9 @@
 </template>
 
 <script>
-import { ConfirmModal } from "./ConfirmModal";
 export default {
   name: "EditStreamModal",
+  components: {},
   data() {
     var newName = "";
     return {

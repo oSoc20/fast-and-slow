@@ -118,6 +118,9 @@
             <vl-column>
                 <FragmentationModal @getFragmentations="getFragmentations"></FragmentationModal>
             </vl-column>
+            <vl-column>
+                <ConfirmModal></ConfirmModal>
+            </vl-column>
         </vl-grid>
     </vl-layout>
 </template>
@@ -125,10 +128,11 @@
 <script>
     import EditStreamModal from "../components/EditStreamModal";
     import FragmentationModal from "../components/FragmentationModal";
+    import ConfirmModal from "../components/ConfirmModal";
 
     export default {
         name: "Datastream",
-        components: {EditStreamModal, FragmentationModal},
+        components: {EditStreamModal, FragmentationModal, ConfirmModal},
         data() {
             return {
                 streams: [],
@@ -174,7 +178,6 @@
                     if(frag.status ==="failure"){
                             this.errorHasOccured = true;
                             this.errorMessage = frag.message;
-                            break;
                         }
                         
                     let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/stream/${name}/fragmentations/${frag.name}`.replace(' ', '_').toLowerCase()

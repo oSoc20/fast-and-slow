@@ -160,13 +160,11 @@
                         if(data[item].status === "failure"){
                             this.errorHasOccured = true;
                             this.errorMessage = data[item].message;
-                            break;
                         }
 
                         if(frag.status ==="failure"){
                             this.errorHasOccured = true;
                             this.errorMessage = frag.message;
-                            break;
                         }
                         else if (frag.status === "LOADING"){
                             loading += 1
