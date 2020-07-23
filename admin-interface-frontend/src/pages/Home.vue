@@ -120,11 +120,16 @@
                 streams: [],
                 inProgress: [],
                 errorHasOccured: false,
-                errorMessage: ""
+                errorMessage: "",
+                interval: null
             }
         },
         created() {
             this.getAllStreams()
+            this.interval = setInterval(() => this.getAllStreams(), 1000*15);
+        },
+        beforeDestroy() {
+            clearInterval(this.interval)
         },
         methods: {
             setIcon: async function () {
@@ -138,13 +143,14 @@
             },
             getAllStreams: async function () {
                 this.errorHasOccured = false;
-                const response = await fetch('http://localhost:3000/streams')
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`)
                 const data = await response.json()
+                let loaded_streams = []
+                let loaded_inProgress = []
 
-                this.streams = []
-                this.inProgress = []
+
                 for (const item in data) {
-                    const streamResponse = await fetch(`http://localhost:3000/streams/${data[item].name}/fragmentations`)
+                    const streamResponse = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${data[item].name}/fragmentations`)
                     const streamData = await streamResponse.json()
                     let available = 0
                     let loading = 0
@@ -164,7 +170,7 @@
                         }
                         else if (frag.status === "LOADING"){
                             loading += 1
-                            this.inProgress.push({
+                            loaded_inProgress.push({
                                 name: frag.name,
                                 description: "",
                                 loaded: false,
@@ -174,7 +180,7 @@
                             })
                         } else if (data[item].status !== "ENABLED" && frag.status === "DISABLED") {
                             loading += 1
-                            this.inProgress.push({
+                            loaded_inProgress.push({
                                 name: frag.name,
                                 description: "",
                                 loaded: false,
@@ -187,7 +193,7 @@
                             available += 1
                         }
                     })
-                    this.streams.push({
+                    loaded_streams.push({
                         name: data[item].name,
                         url: data[item].sourceURI,
                         online: available,
@@ -196,6 +202,9 @@
                     })
 
                 }
+                this.streams = loaded_streams
+                this.inProgress = loaded_inProgress
+
                 await this.setIcon()
             },
             viewDetails: function (name) {
