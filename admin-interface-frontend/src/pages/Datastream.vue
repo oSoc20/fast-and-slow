@@ -158,7 +158,7 @@
                 console.log(data)
                 this.fragmentations = [];
                 data.forEach(frag => {
-                    let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/stream/${encodeURIComponent(name)}/fragmentations/${encodeURIComponent(frag.name)}`
+                    let endpoint = `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${encodeURIComponent(name)}/${encodeURIComponent(frag.name)}`
                     this.fragmentations.push({
                         endpoint: endpoint,
                         strategy: frag.kind,
