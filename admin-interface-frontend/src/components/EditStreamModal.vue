@@ -73,6 +73,7 @@
 import { ConfirmModal } from "./ConfirmModal";
 export default {
   name: "EditStreamModal",
+  components: {ConfirmModal},
   data() {
     var newName = "";
     return {
