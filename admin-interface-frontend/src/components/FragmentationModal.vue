@@ -103,7 +103,7 @@
               {text: "SUFFIX", value: "SUFFIX"},
               {text: "NGRAM - minLength: 2, maxLength: 4", value: "NGRAM"},
               {text: "TIME_INTERVAL - interval: 20 min", value: "TIME_INTERVAL"},
-              {text: "XYZ_TILE", value: "XYZ_TILE"},
+              {text: "XYZ_TILE - minZoom: 13, maxZoom: 15", value: "XYZ_TILE"},
               {text: "IDENTITY", value: "IDENTITY"},
             ];
             var selectedProperty;
