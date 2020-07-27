@@ -12,7 +12,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          always-auth: true
+          node-version: '12.x'
+          registry-url: https://registry.npmjs.org
       - name: Install and Build 🔧
         run: |
           npm install
