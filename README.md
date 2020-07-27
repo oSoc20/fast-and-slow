@@ -19,6 +19,6 @@ This is the frontend of the [Fast and Slow](https://github.com/oSoc20/fast-and-s
 # install project dependencies
 npm install
 
-# run the backend
+# run the frontend
 npm run serve
 ```
