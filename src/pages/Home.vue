@@ -24,18 +24,20 @@
                 </vl-content-header>
             </vl-column>
 
+
             <template v-if="errorHasOccured">
                 <vl-column>
                     <vl-alert
-                        icon='warning'
-                        close-text='close warning'
-                        :title='errorMessage'
-                        mod-naked
-                        mod-error>
-                        An error has occured while handling your request, please verify!
+                            icon='warning'
+                            close-text='close warning'
+                            title="An error has occured while handling your request, please verify!"
+                            mod-naked
+                            mod-error>
+                        {{errorMessage}}
                     </vl-alert>
                 </vl-column>
             </template>
+
 
             <vl-column>
                 <vl-infoblock
@@ -126,7 +128,7 @@
         },
         created() {
             this.getAllStreams()
-            this.interval = setInterval(() => this.getAllStreams(), 1000*15);
+            this.interval = setInterval(() => this.getAllStreams(), 1000 * 15);
         },
         beforeDestroy() {
             clearInterval(this.interval)
@@ -147,61 +149,60 @@
                 const data = await response.json()
                 let loaded_streams = []
                 let loaded_inProgress = []
+                if (data.status === "failure") {
+                    this.errorHasOccured = true;
+                    this.errorMessage = data.msg;
+                } else {
+
+                    for (const item in data) {
+                        const streamResponse = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${data[item].name}/fragmentations`)
+                        const streamData = await streamResponse.json()
+                        let available = 0
+                        let loading = 0
+
+                        streamData.forEach(frag => {
 
 
-                for (const item in data) {
-                    const streamResponse = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${data[item].name}/fragmentations`)
-                    const streamData = await streamResponse.json()
-                    let available = 0
-                    let loading = 0
+                            if (frag.status === "failure") {
+                                this.errorHasOccured = true;
+                                this.errorMessage = frag.msg;
+                            } else if (frag.status === "LOADING") {
+                                loading += 1
+                                loaded_inProgress.push({
+                                    name: frag.name,
+                                    description: "",
+                                    loaded: false,
+                                    fragmentation: frag.kind,
+                                    property: frag.params.propertyLabel
 
-                    streamData.forEach(frag => {
+                                })
+                            } else if (data[item].status !== "ENABLED" && frag.status === "DISABLED") {
+                                loading += 1
+                                loaded_inProgress.push({
+                                    name: frag.name,
+                                    description: "",
+                                    loaded: false,
+                                    fragmentation: frag.kind,
+                                    property: frag.params.propertyLabel
 
-                        if(data[item].status === "failure"){
-                            this.errorHasOccured = true;
-                            this.errorMessage = data[item].message;
-                        }
+                                })
 
-                        if(frag.status ==="failure"){
-                            this.errorHasOccured = true;
-                            this.errorMessage = frag.message;
-                        }
-                        else if (frag.status === "LOADING"){
-                            loading += 1
-                            loaded_inProgress.push({
-                                name: frag.name,
-                                description: "",
-                                loaded: false,
-                                fragmentation: frag.kind,
-                                property: frag.params.propertyLabel
+                            } else if (frag.status === "ENABLED") {
+                                available += 1
+                            }
+                        })
+                        loaded_streams.push({
+                            name: data[item].name,
+                            url: data[item].sourceURI,
+                            online: available,
+                            progress: loading,
+                            loaded: (data[item].status === "ENABLED"),
+                        })
 
-                            })
-                        } else if (data[item].status !== "ENABLED" && frag.status === "DISABLED") {
-                            loading += 1
-                            loaded_inProgress.push({
-                                name: frag.name,
-                                description: "",
-                                loaded: false,
-                                fragmentation: frag.kind,
-                                property: frag.params.propertyLabel
-
-                            })
-
-                        } else if (frag.status === "ENABLED") {
-                            available += 1
-                        }
-                    })
-                    loaded_streams.push({
-                        name: data[item].name,
-                        url: data[item].sourceURI,
-                        online: available,
-                        progress: loading,
-                        loaded: (data[item].status === "ENABLED"),
-                    })
-
+                    }
+                    this.streams = loaded_streams
+                    this.inProgress = loaded_inProgress
                 }
-                this.streams = loaded_streams
-                this.inProgress = loaded_inProgress
 
                 await this.setIcon()
             },

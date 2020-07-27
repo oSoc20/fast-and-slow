@@ -35,10 +35,10 @@
                         <vl-alert
                             icon='warning'
                             close-text='close warning'
-                            :title='errorMessage'
+                            title="An error has occured while handling your request, please verify!"
                             mod-naked
                             mod-error>
-                            An error has occured while handling your request, please verify!
+                            {{errorMessage}}
                         </vl-alert>
                     </vl-column>
                 </template>
@@ -183,7 +183,7 @@
 
                     if(frag.status ==="failure"){
                             this.errorHasOccured = true;
-                            this.errorMessage = frag.message;
+                            this.errorMessage = frag.msg;
                         }
 
                     this.fragmentations.push({
@@ -227,7 +227,7 @@
 
                     if(data[item].status === "failure"){
                         this.errorHasOccured = true;
-                        this.errorMessage = data[item].message;
+                        this.errorMessage = data[item].msg;
                         break;
                     }
 
