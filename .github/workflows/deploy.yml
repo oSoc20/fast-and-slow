@@ -19,15 +19,12 @@ jobs:
           node-version: '12.x'
           registry-url: https://registry.npmjs.org
           scope: '@govflanders'
-      - name: Install 🔧
-        run: |
-          npm install
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Build
+      - name: Install 🔧And Build
         run: |
           npm install
           npm run-script build
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
