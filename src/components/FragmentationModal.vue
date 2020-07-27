@@ -138,7 +138,7 @@
                     body: JSON.stringify({
                         name: this.fragmentationName,
                         strategy: this.selectedStrategy,
-                        property: encodeURIComponent(this.selectedProperty.uri),
+                        property: this.selectedProperty.uri,
                         propertyLabel: this.selectedProperty.name
                     }),
                     headers: {
