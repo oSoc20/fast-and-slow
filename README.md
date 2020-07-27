@@ -14,6 +14,17 @@ This is the frontend of the [Fast and Slow](https://github.com/oSoc20/fast-and-s
 * VueJS
 * A valid npm authentication token from _Informatie Vlaanderen_
 
+### Running in a Docker container
+Edit the [.env]() file so that the backend url is configured.
+
+```bash
+docker build -t admin-interface --build-arg NPM_AUTH_TOKEN=<AUTH_CODE> .
+```
+
+```bash
+docker run -p 3000:3000 -it --rm admin-interface
+```
+
 ### Back-end
 ```
 # install project dependencies
