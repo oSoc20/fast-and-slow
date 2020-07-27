@@ -22,7 +22,7 @@ docker build -t admin-interface --build-arg NPM_AUTH_TOKEN=<AUTH_CODE> .
 ```
 
 ```bash
-docker run -p 3000:3000 -it --rm admin-interface
+docker run -p 8080:8080 -it --rm admin-interface
 ```
 
 ### Back-end
