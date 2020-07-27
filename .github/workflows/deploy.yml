@@ -18,6 +18,7 @@ jobs:
           always-auth: true
           node-version: '12.x'
           registry-url: https://registry.npmjs.org
+          scope: '@govflanders'
       - name: Install and Build 🔧
         run: |
           npm install
