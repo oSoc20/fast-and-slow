@@ -18,7 +18,6 @@ RUN rm -f .npmrc
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
-COPY vue.config.js ./
 
 # build app for production with minification
 RUN npm run build
