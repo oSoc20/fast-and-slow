@@ -24,12 +24,3 @@ docker build -t admin-interface --build-arg NPM_AUTH_TOKEN=<AUTH_CODE> .
 ```bash
 docker run -d -p 8080:8080 -it --rm admin-interface
 ```
-
-### Back-end
-```
-# install project dependencies
-npm install
-
-# run the frontend
-npm run serve
-```
