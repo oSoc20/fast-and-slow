@@ -6,7 +6,7 @@ RUN npm install -g http-server
 # make the 'app' folder the current working directory
 WORKDIR /app
 
-ARG NPM_TOKEN
+ARG NPM_AUTH_TOKEN
 COPY .npmrc .npmrc
 
 # copy both 'package.json' and 'package-lock.json' (if available)
