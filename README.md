@@ -33,4 +33,4 @@ The backend is a nodeJS server that can be found [here](https://github.com/hdelv
 The databse is a Scylla (cassandra) database. The setup is also discribed on the [backend page](https://github.com/hdelva/tree_index).
 
 ### Query interface
-You have the possibility to query your event streams with our [query interface](https://github.com/oSoc20/fast-and-slow-query). This one is running on github pages and can be accessed [here](https://osoc20.github.io/fast-and-slow-query/)
+You have the possibility to query your event streams with our [query interface](https://github.com/oSoc20/fast-and-slow-query). This one is running on github pages and can be accessed [here](https://osoc20.github.io/fast-and-slow-query/).
