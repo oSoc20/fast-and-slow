@@ -164,9 +164,8 @@
             },
             changeStream(index) {
                 this.selectedStream = this.streams[index].name;
-                this.streamURL = encodeURI(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${this.selectedStream}`)
                 const encodedUrl = "/event-stream?eventStreamName=" + this.streams[index].name
-                this.$router.push(encodedUrl)
+                return this.$router.push(encodedUrl)
             },
             goBack() {
                 return this.$router.push('/');
