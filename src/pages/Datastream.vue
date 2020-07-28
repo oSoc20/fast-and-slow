@@ -223,7 +223,7 @@
                 await this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName))
             },
             getAllStreams: async function (name) {
-                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`);
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`);
                 const data = await response.json();
                 this.streams = [];
                 for (const item in data) {

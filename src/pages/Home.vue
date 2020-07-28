@@ -149,7 +149,7 @@
             },
             getAllStreams: async function () {
                 this.errorHasOccured = false;
-                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`)
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`)
                 const data = await response.json()
                 let loaded_streams = []
                 let loaded_inProgress = []

@@ -84,7 +84,7 @@ export default {
       console.log("called");
       //evt.preventDefault()
 
-      const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams`, {
+      const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`, {
         method: "post",
         body: JSON.stringify({
           name: this.newStream.name,
