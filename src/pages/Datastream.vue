@@ -162,11 +162,13 @@
             deleteFragmentation(index) {
                 this.fragmentations.splice(index, 1);
             },
-            changeStream(index) {
+            async changeStream(index) {
                 this.selectedStream = this.streams[index].name;
                 const encodedUrl = "/event-stream?eventStreamName=" + this.streams[index].name
-                this.$router.push(encodedUrl)
-                this.$router.go(0)
+                await this.$router.push(encodedUrl)
+                this.streamURL = encodeURI(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${this.streams[index].name}`)
+                await this.getFragmentations(this.selectedStream)
+                this.$forceUpdate()
             },
             goBack() {
                 return this.$router.push('/');
