@@ -124,7 +124,7 @@
         methods: {
             loadProperties: async function (name) {
                 const response = await fetch(
-                    `http://localhost:3000/streams/${name}`
+                    `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${name}`
                 );
                 const data = await response.json();
                 console.log(data)
@@ -133,7 +133,7 @@
                 });
             },
             addFragmentation: async function () {
-                const response = await fetch(`http://localhost:3000/streams/${this.$route.query.eventStreamName}/fragmentations`, {
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${this.$route.query.eventStreamName}/fragmentations`, {
                     method: "post",
                     body: JSON.stringify({
                         name: this.fragmentationName,

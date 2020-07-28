@@ -79,7 +79,7 @@ export default {
   methods: {
     updateStreamName: async function () {
       const getStream = await fetch(
-        `http://localhost:3000/streams/${this.$route.query.eventStreamName}`
+        `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${this.$route.query.eventStreamName}`
       );
       const getStreamData = await getStream.json();
 
