@@ -95,7 +95,7 @@ export default {
           },
         });
         const data = await response.json();
-        const encodedUrl = "/streams?eventStreamName=" + this.newName;
+        const encodedUrl = "/event-stream?eventStreamName=" + this.newName;
         await this.$router.push(encodedUrl);
         window.location.reload();
       } else {
