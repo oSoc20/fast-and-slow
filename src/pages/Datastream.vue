@@ -164,7 +164,7 @@
             },
             changeStream(index) {
                 this.selectedStream = this.streams[index].name;
-                const encodedUrl = "/event-stream?eventStreamName=" + this.streams[index].name
+                const encodedUrl = encodeURI("/event-stream?eventStreamName=" + this.selectedStream)
                 return this.$router.push(encodedUrl)
             },
             goBack() {
