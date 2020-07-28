@@ -54,6 +54,8 @@
                         :title="line.name"
                         :subtitle="line.description">
 
+                    <strong>Stream: </strong> {{line.stream}}
+                    <br>
                     <strong>Is loaded: </strong>
                     <vl-icon v-if="line.loaded" icon="check-circle" mod-large/>
                     <vl-icon v-else icon="ban" mod-large/>
@@ -137,9 +139,11 @@
             setIcon: async function () {
                 this.inProgress.forEach(item => {
                     if (item.loaded) {
-                        item.template = "<strong>Description: </strong>" + item.description + "<br>" + "<strong>Is loaded: </strong>" + '<vl-icon icon="check-circle" mod-large> </vl-icon>' + '<br>' + "<strong>Fragmentation: </strong>" + item.fragmentation;
+                        item.template = "<strong>Description: </strong>" + item.description + "<br>" + "<strong>Stream: </strong>" + item.stream +
+                            "<br>" + "<strong>Is loaded: </strong>" + '<vl-icon icon="check-circle" mod-large> </vl-icon>' + '<br>' + "<strong>Fragmentation: </strong>" + item.fragmentation;
                     } else {
-                        item.template = "<strong>Description: </strong>" + item.description + "<br>" + "<strong>Is loaded: </strong>" + '<vl-icon icon="alert-circle" mod-large </vl-icon>' + "<br>" + "<strong>Fragmentation: </strong>" + item.fragmentation;
+                        item.template = "<strong>Description: </strong>" + item.description + "<br>" + "<strong>Stream: </strong>" + item.stream +
+                            +"<br>" + "<strong>Is loaded: </strong>" + '<vl-icon icon="alert-circle" mod-large </vl-icon>' + "<br>" + "<strong>Fragmentation: </strong>" + item.fragmentation;
                     }
                 })
             },
@@ -171,6 +175,7 @@
                                 loaded_inProgress.push({
                                     name: frag.name,
                                     description: "",
+                                    stream: data[item].name,
                                     loaded: false,
                                     fragmentation: frag.kind,
                                     property: frag.params.propertyLabel
@@ -181,6 +186,7 @@
                                 loaded_inProgress.push({
                                     name: frag.name,
                                     description: "",
+                                    stream: data[item].name,
                                     loaded: false,
                                     fragmentation: frag.kind,
                                     property: frag.params.propertyLabel
