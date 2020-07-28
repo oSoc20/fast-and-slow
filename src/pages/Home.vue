@@ -213,7 +213,7 @@
                 await this.setIcon()
             },
             viewDetails: function (name) {
-                const encodedUrl = "/event-stream?eventStreamName=" + name
+                const encodedUrl = encodeURI("/event-stream?eventStreamName=" + name)
                 this.$router.push(encodedUrl)
             }
         }
