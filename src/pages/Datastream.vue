@@ -193,7 +193,7 @@
                         endpoint: endpoint,
                         strategy: frag.kind,
                         name: frag.name,
-                        property: ("propertyLabel" in frag.params) ? frag.propertyLabel : frag.propertyLabel,
+                        property: ("propertyLabel" in frag.params) ? frag.params.propertyLabel : frag.propertyLabel,
                         enabled: (frag.status === "ENABLED"),
                         loading: frag.status === "LOADING"
                     });
