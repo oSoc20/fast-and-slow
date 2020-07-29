@@ -5,6 +5,10 @@ import Datastream from "./pages/Datastream";
 
 Vue.use(Router)
 
+/**
+ *
+ * @type {VueRouter}
+ */
 const router = new Router({
     mode: 'history',
     routes: [

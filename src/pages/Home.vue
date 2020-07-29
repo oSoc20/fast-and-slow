@@ -131,14 +131,24 @@
                 interval: null,
             }
         },
+        /**
+         *
+         */
         created() {
             this.getAllStreams()
             this.interval = setInterval(() => this.getAllStreams(), 1000 * 15);
         },
+        /**
+         *
+         */
         beforeDestroy() {
             clearInterval(this.interval)
         },
         methods: {
+            /**
+             *
+             * @returns {Promise<void>}
+             */
             setIcon: async function () {
                 this.inProgress.forEach(item => {
                     if (item.loaded) {
@@ -150,6 +160,10 @@
                     }
                 })
             },
+            /**
+             *
+             * @returns {Promise<void>}
+             */
             getAllStreams: async function () {
                 this.errorHasOccured = false;
                 const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`)
@@ -218,6 +232,10 @@
 
                 await this.setIcon()
             },
+            /**
+             *
+             * @param name
+             */
             viewDetails: function (name) {
                 const encodedUrl = encodeURI("/event-stream?eventStreamName=" + name)
                 this.$router.push(encodedUrl)

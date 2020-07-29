@@ -148,6 +148,9 @@
 
             }
         },
+        /**
+         *
+         */
         created() {
             this.streamURL = encodeURI(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${this.$route.query.eventStreamName}`)
             this.getAllStreams(decodeURIComponent(this.$route.query.eventStreamName));
@@ -155,10 +158,17 @@
             this.fragInterval = setInterval(() => this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName)), 1000 * 15);
 
         },
+        /**
+         *
+         */
         beforeDestroy() {
             clearInterval(this.fragInterval)
         },
         methods: {
+            /**
+             *
+             * @param index
+             */
             deleteFragmentation(index) {
                 this.fragmentations.splice(index, 1);
             },
@@ -170,10 +180,18 @@
                 await this.getFragmentations(this.selectedStream)
                 this.$forceUpdate()
             },
+            /**
+             *
+             * @returns {Promise<Route>}
+             */
             goBack() {
                 return this.$router.push('/');
             },
-
+            /**
+             *
+             * @param name
+             * @returns {Promise<void>}
+             */
             getFragmentations: async function (name) {
                 const response = await fetch(
                     `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${encodeURIComponent(name)}/fragmentations`
@@ -199,6 +217,12 @@
                     });
                 });
             },
+            /**
+             *
+             * @param state
+             * @param fragName
+             * @returns {Promise<void>}
+             */
             enableFragmentation: async function (state, fragName) {
                 console.log(state, fragName)
                 const response = await fetch(
@@ -222,6 +246,11 @@
                 }
                 await this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName))
             },
+            /**
+             *
+             * @param name
+             * @returns {Promise<void>}
+             */
             getAllStreams: async function (name) {
                 const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`);
                 const data = await response.json();

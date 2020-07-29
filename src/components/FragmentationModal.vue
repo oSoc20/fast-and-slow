@@ -117,11 +117,19 @@
                 selectedStrategy
             };
         },
+      /**
+       *
+       */
         mounted() {
             this.loadProperties(this.$route.query.eventStreamName)
             this.domainName = process.env.VUE_APP_BACKEND_DOMAIN
         },
         methods: {
+          /**
+           *
+           * @param name
+           * @returns {Promise<void>}
+           */
             loadProperties: async function (name) {
                 const response = await fetch(
                     `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${name}`
@@ -132,6 +140,10 @@
                     this.properties.push({text: prop.text, value: prop.value});
                 });
             },
+          /**
+           *
+           * @returns {Promise<void>}
+           */
             addFragmentation: async function () {
                 const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${this.$route.query.eventStreamName}/fragmentations`, {
                     method: "post",
@@ -155,6 +167,9 @@
 
                 await this.$emit("getFragmentations", this.$route.query.eventStreamName)
             },
+          /**
+           *
+           */
             emptyFields: function(){
               this.fragmentationName = ""
                     this.selectedProperty = ''

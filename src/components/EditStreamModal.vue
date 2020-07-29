@@ -77,6 +77,10 @@ export default {
     };
   },
   methods: {
+    /**
+     *
+     * @returns {Promise<void>}
+     */
     updateStreamName: async function () {
       const getStream = await fetch(
         `${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/${this.$route.query.eventStreamName}`
@@ -105,6 +109,9 @@ export default {
       // Empty the fields
       this.emptyFields();
     },
+    /**
+     *
+     */
     emptyFields: function () {
       this.newName = "";
     },

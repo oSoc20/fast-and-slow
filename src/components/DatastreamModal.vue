@@ -80,6 +80,10 @@ export default {
     };
   },
   methods: {
+    /**
+     *
+     * @returns {Promise<void>}
+     */
     submitStream: async function() {
       console.log("called");
       //evt.preventDefault()
@@ -105,6 +109,9 @@ export default {
       this.emptyFields();
       //window.location.reload();
     },
+    /**
+     *
+     */
     emptyFields: function(){
         this.newStream.name = "";
         this.newStream.url = "";
