@@ -97,7 +97,7 @@
                         <td>{{stream.progress}}</td>
                         <td>
                             <vl-icon v-if="stream.loaded" icon="check-circle" mod-large/>
-                            <vl-icon v-else icon="ban" v-vl-tooltip.left="'test'" mod-large/>
+                            <vl-icon v-else icon="ban" v-vl-tooltip.left="'<strong>Pages: </strong>{{stream.loading_status.pages}}'" mod-large/>
                         </td>
                         <td>
                             <vl-button @click="viewDetails(stream.name)" mod-narrow> View details</vl-button>
@@ -202,6 +202,7 @@
                             url: data[item].sourceURI,
                             online: available,
                             progress: loading,
+                            loading_status: data[item].progress,
                             loaded: (data[item].status === "ENABLED"),
                         })
 
