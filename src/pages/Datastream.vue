@@ -149,7 +149,7 @@
             }
         },
         /**
-         *
+         * Called on creation of the component
          */
         created() {
             this.streamURL = encodeURI(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/data/${this.$route.query.eventStreamName}`)
@@ -159,7 +159,7 @@
 
         },
         /**
-         *
+         * Called before destroying the component
          */
         beforeDestroy() {
             clearInterval(this.fragInterval)
@@ -181,15 +181,15 @@
                 this.$forceUpdate()
             },
             /**
-             *
+             * Go back to the home page
              * @returns {Promise<Route>}
              */
             goBack() {
                 return this.$router.push('/');
             },
             /**
-             *
-             * @param name
+             * Get all the fragmentations with their status and information
+             * @param name: Name of the eventstream
              * @returns {Promise<void>}
              */
             getFragmentations: async function (name) {
@@ -218,9 +218,9 @@
                 });
             },
             /**
-             *
-             * @param state
-             * @param fragName
+             * Enable a fragmentation to make it accessible from the outside
+             * @param state: State to what the fragmentation should be changed
+             * @param fragName: name of the fragmentation
              * @returns {Promise<void>}
              */
             enableFragmentation: async function (state, fragName) {
@@ -247,8 +247,8 @@
                 await this.getFragmentations(decodeURIComponent(this.$route.query.eventStreamName))
             },
             /**
-             *
-             * @param name
+             * Get all eventstrams
+             * @param name: Name of the current eventstream
              * @returns {Promise<void>}
              */
             getAllStreams: async function (name) {
