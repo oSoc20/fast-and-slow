@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     /**
-     *
+     * Add an event stream according to what is entered in the modal fields.
      * @returns {Promise<void>}
      */
     submitStream: async function() {
@@ -105,12 +105,11 @@ export default {
       
 
       await this.$emit("getAllStreams");
-      // Empty the fields
       this.emptyFields();
       //window.location.reload();
     },
-    /**
-     *
+    /** 
+     * Empty the fields of the modal.
      */
     emptyFields: function(){
         this.newStream.name = "";
