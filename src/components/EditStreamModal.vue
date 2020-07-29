@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     /**
-     *
+     * Edits a the stream name for a specific eventstream
      * @returns {Promise<void>}
      */
     updateStreamName: async function () {
@@ -87,6 +87,7 @@ export default {
       );
       const getStreamData = await getStream.json();
 
+      // if eventstream exists in database
       if (getStreamData) {
         const response = await fetch(`${process.env.VUE_APP_BACKEND_DOMAIN || "http://localhost:3000"}/streams/`, {
           method: "post",
@@ -110,7 +111,7 @@ export default {
       this.emptyFields();
     },
     /**
-     *
+     * Empty the form input fields
      */
     emptyFields: function () {
       this.newName = "";
