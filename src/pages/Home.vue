@@ -97,7 +97,7 @@
                         <td>{{stream.progress}}</td>
                         <td>
                             <vl-icon v-if="stream.loaded" icon="check-circle" mod-large/>
-                            <vl-icon v-else icon="ban" mod-large/>
+                            <vl-icon v-else icon="ban" v-vl-tooltip.left="'test'" mod-large/>
                         </td>
                         <td>
                             <vl-button @click="viewDetails(stream.name)" mod-narrow> View details</vl-button>
@@ -125,7 +125,7 @@
                 inProgress: [],
                 errorHasOccured: false,
                 errorMessage: "",
-                interval: null
+                interval: null,
             }
         },
         created() {
