@@ -201,7 +201,7 @@
                             }
                         })
                         data[item].progress.latestEvent = new Date(data[item].progress.latestEvent).toString()
-                        data[item].progress.latestEvent = data[item].progress.latestEvent.substring(0, str.lastIndexOf(":"))
+                        data[item].progress.latestEvent = data[item].progress.latestEvent.substring(0, data[item].progress.latestEvent.lastIndexOf(":"))
                         loaded_streams.push({
                             name: data[item].name,
                             url: data[item].sourceURI,
