@@ -6,7 +6,7 @@ import Datastream from "./pages/Datastream";
 Vue.use(Router)
 
 /**
- *
+ * Router from Vue. Associate pages with paths.
  * @type {VueRouter}
  */
 const router = new Router({
