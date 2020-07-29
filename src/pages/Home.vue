@@ -2,7 +2,6 @@
     <vl-layout>
         <vl-grid mod-stacked v-vl-equal-height:container>
             <vl-column>
-                <!-- <vl-title tag-name="h1">Fast and Slow</vl-title> -->
                 <vl-content-header
                         mod-large
                         mod-show-mobile
@@ -132,21 +131,18 @@
             }
         },
         /**
-         *
+         * Called on creation of component, calls getAllStreams method and set refresh interval to 15 seconds
          */
         created() {
             this.getAllStreams()
             this.interval = setInterval(() => this.getAllStreams(), 1000 * 15);
         },
-        /**
-         *
-         */
         beforeDestroy() {
             clearInterval(this.interval)
         },
         methods: {
             /**
-             *
+             * Sets the right icon according to the loading status of the event stream
              * @returns {Promise<void>}
              */
             setIcon: async function () {
@@ -161,7 +157,7 @@
                 })
             },
             /**
-             *
+             * Gets all the streams and the fragmentations that are in progress
              * @returns {Promise<void>}
              */
             getAllStreams: async function () {
@@ -233,8 +229,8 @@
                 await this.setIcon()
             },
             /**
-             *
-             * @param name
+             * Navigates to the details page of the specified event stream
+             * @param name - name of the event stream
              */
             viewDetails: function (name) {
                 const encodedUrl = encodeURI("/event-stream?eventStreamName=" + name)
